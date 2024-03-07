@@ -8,7 +8,7 @@ export const publicRoutes = [
   "/auth/new-verification",
   "/api/uploadthing",
   "/api/webhook",
-  "/api/courses/[courseId]/verify-payment"
+  "/api/verify-payment"
 ];
 
 /**

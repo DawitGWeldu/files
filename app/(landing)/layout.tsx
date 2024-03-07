@@ -37,7 +37,7 @@ export default async function MarketingLayout({
               />
             ) : (
               <nav>
-                <LoginButton mode="modal">
+                <LoginButton key={0} mode="modal">
                   <p
                     className={cn(
                       buttonVariants({ size: "sm" }),

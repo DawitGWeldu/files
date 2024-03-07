@@ -1,7 +1,6 @@
 datasource db {
   provider     = "mysql"
   url          = env("DATABASE_URL")
-  relationMode = "prisma"
 }
 
 generator client {
@@ -14,6 +13,12 @@ enum UserRole {
   ADMIN
   USER
   TEACHER
+}
+
+enum TransactionStatus {
+  PENDING
+  FAILED
+  SUCCESSFUL
 }
 
 
@@ -183,6 +188,7 @@ model Purchase {
 
   courseId String
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  tx_ref String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
@@ -195,6 +201,17 @@ model StripeCustomer {
   id String @id @default(uuid())
   userId String @unique
   stripeCustomerId String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ChapaTransaction {
+  id String @id @default(uuid())
+  userId String
+  courseId String
+  tx_ref String @unique
+  status TransactionStatus @default(PENDING)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

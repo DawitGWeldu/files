@@ -55,9 +55,8 @@ export async function POST(
         last_name: "L",
         amount: `${course.price}`,
         tx_ref: tx_reference,
-        callback_url: `http://localhost:3000/api/courses/${course.id}/verify-payment `,
-        return_url: return_url,
-
+        callback_url: `http://localhost:3000/api/verify-payment`,
+        return_url: return_url
       }
     }).then((res) => {
       console.log("[CHECKOUT URL]: ", JSON.stringify(res.data.data.checkout_url))
@@ -65,11 +64,17 @@ export async function POST(
       checkout_url = res.data.data.checkout_url
       }
     }).catch((err) => {
-
-      console.log("[CHECKOUT ERROR]: ", JSON.stringify(err))
-      return NextResponse.json({ err });
-
+      // console.log("[CHECKOUT ERROR]: ", JSON.stringify(err))
+      throw new Error("Checkout Failed");
     });
+
+    await db.chapaTransaction.create({
+      data: {
+        courseId: course.id,
+        tx_ref: tx_reference,
+        userId: user.id
+      }
+    })
     return NextResponse.json({ url: checkout_url});
 
 
