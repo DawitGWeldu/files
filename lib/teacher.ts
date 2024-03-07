@@ -1,3 +1,9 @@
-export const isTeacher = (userId?: string | null) => {
-  return userId === process.env.NEXT_PUBLIC_TEACHER_ID;
+import { auth } from "@/auth";
+export const isTeacher =  async () => {
+  const session = await auth();
+  if(session?.user?.role == "TEACHER"){
+    return true;
+  }
+  return false;
+  
 }

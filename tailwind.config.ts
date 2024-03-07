@@ -76,7 +76,12 @@ const config = withUt({
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require('tailwindcss-patterns'),
+    require("tailwind-gradient-mask-image")
+
+  ],
 }) satisfies Config
 
 export default config
