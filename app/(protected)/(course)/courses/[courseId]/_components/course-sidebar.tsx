@@ -59,7 +59,7 @@ export const CourseSidebar = async ({
       </div>
      
 
-      <nav className="grid items-start w-full">
+      <nav className="grid items-start gap-2 w-full">
         {course.chapters.map((item, index) => {
           const href = `/courses/${item.courseId}/chapters/${item.id}`;
           return (
