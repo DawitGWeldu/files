@@ -14,8 +14,8 @@ interface CardWrapperProps {
   children: React.ReactNode;
   headerLabel: string;
   headerAction: string,
-  footerLabel: string,
-  footerHref: string,
+  footerLabel?: string,
+  footerHref?: string,
   showSocial?: boolean;
 };
 
@@ -42,12 +42,12 @@ export const CardWrapper = ({
       )}
       <CardFooter className="flex justify-center">
       <p className="px-8 text-center text-sm text-muted-foreground">
-          <Link
+          <a
             href={footerHref}
             className="hover:text-brand underline underline-offset-4"
           >
             {footerLabel}
-          </Link>
+          </a>
         </p>
       </CardFooter>
        
