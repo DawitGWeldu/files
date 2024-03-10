@@ -27,7 +27,7 @@ export default function Home() {
             Follow me on LinkedIn
           </Link>
           <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
-            Redefining learning in the digital age.
+            Learning in the digital age.
           </h1>
           <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
           Immerse yourself in transformative courses and a cutting-edge learning experience that harnesses advanced technology. 
