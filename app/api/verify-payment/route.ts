@@ -26,13 +26,13 @@ export async function GET(
                     userId: transaction.userId,
                 }
             });
-            console.log("I made it here")
+            return Response.json({ status: "Transaction Success" });
         } catch (error) {
             throw new Error("Transaction Data not found")
         }
 
     }
-    return Response.json({ status: "Transaction Success" });
+    return Response.json({ status: "Transaction Not Success" });
 
 
     // return new NextResponse("Internal Error", { status: 500 });
