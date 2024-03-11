@@ -41,10 +41,10 @@ export async function POST(
     }
     const tx_reference = uuidv4();;
     const return_url = `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}`;
-    const callback_url = `${process.env.NEXT_PUBLIC_APP_URL}/api/verify-payment`;
+    // const callback_url = `${process.env.NEXT_PUBLIC_APP_URL}/api/verify-payment`;
 
     let checkout_url = null;
-    const respons = await axios({
+    const res = await axios({
       method: "post",
       url: "https://api.chapa.co/v1/transaction/initialize",
       headers: {
@@ -56,18 +56,19 @@ export async function POST(
         last_name: "L",
         amount: `${course.price}`,
         tx_ref: tx_reference,
-        callback_url: callback_url,
+        // callback_url: callback_url,
         return_url: return_url
       }
-    }).then((res) => {
+    })
+
       console.log("[CHECKOUT URL]: ", JSON.stringify(res.data.data.checkout_url))
       if(res.data.status == "success") {
       checkout_url = res.data.data.checkout_url
       }
-    }).catch((err) => {
-      // console.log("[CHECKOUT ERROR]: ", JSON.stringify(err))
-      throw new Error("Checkout Failed");
-    });
+    // }).catch((err) => {
+    //   // console.log("[CHECKOUT ERROR]: ", JSON.stringify(err))
+    //   throw new Error("Checkout Failed");
+    // });
 
     await db.chapaTransaction.create({
       data: {
@@ -76,11 +77,11 @@ export async function POST(
         userId: user.id
       }
     })
-    return NextResponse.json({ url: checkout_url});
-
-
+    // return NextResponse.json({ url: checkout_url});
+    return NextResponse.json({ url: res.data.data.checkout_url});
   } catch (error) {
     console.log("[COURSE_ID_CHECKOUT]", error);
-    return new NextResponse("Internal Error", { status: 500 })
+    // return new NextResponse("Internal Error", { status: 500 })
+    throw new Error("Checkout Failed");
   }
 }
