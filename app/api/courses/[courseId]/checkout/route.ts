@@ -41,6 +41,7 @@ export async function POST(
     }
     const tx_reference = uuidv4();;
     const return_url = `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}`;
+    const callback_url = `${process.env.NEXT_PUBLIC_APP_URL}/api/verify-payment`;
 
     let checkout_url = null;
     const respons = await axios({
@@ -55,7 +56,7 @@ export async function POST(
         last_name: "L",
         amount: `${course.price}`,
         tx_ref: tx_reference,
-        callback_url: "http://localhost:3000/api/verify-payment",
+        callback_url: callback_url,
         return_url: return_url
       }
     }).then((res) => {
