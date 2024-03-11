@@ -55,7 +55,7 @@ export async function POST(
         last_name: "L",
         amount: `${course.price}`,
         tx_ref: tx_reference,
-        callback_url: "https://prototype-omega-cyan.vercel.app/api/verify-payment",
+        callback_url: "http://localhost:3000/api/verify-payment",
         return_url: return_url
       }
     }).then((res) => {
