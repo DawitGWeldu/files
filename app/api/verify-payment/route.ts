@@ -1,30 +1,30 @@
 import { db } from "@/lib/db";
 import { ChapaTransaction, Course } from "@prisma/client"
-import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 export async function GET(
-    req: Request) {
-    const { searchParams } = new URL(req.url);
+    req: NextRequest) {
+    const searchParams  = req.nextUrl.searchParams;
     const status = searchParams.get("status");
+    console.log("[CALLBACK RAN]: [TRANSACTION STATUS]: ", status)
+
     let tx_ref: string = "";
-    let transaction: ChapaTransaction
     if (status == "success") {
 
         tx_ref = searchParams.get('trx_ref')!;
         try {
-            const tr = await db.chapaTransaction.findFirst({
+            const transaction = await db.chapaTransaction.findFirst({
                 where: {
                     tx_ref: searchParams.get('trx_ref')!,
                     status: 'PENDING'
                 }
             })
-            transaction = tr!;
             // console.log(JSON.stringify(transaction))
 
             await db.purchase.create({
                 data: {
-                    courseId: transaction.courseId,
-                    userId: transaction.userId,
+                    courseId: transaction!.courseId,
+                    userId: transaction!.userId,
                 }
             });
             console.log("[CALLBACK RAN]: Success")
