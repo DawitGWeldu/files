@@ -72,7 +72,11 @@ export async function POST(
       userId: user.id!
     }
   })
-  return NextResponse.json({ url: checkout_url });
+  // return NextResponse.json({ url: checkout_url });
+  return NextResponse.json({
+    return: return_url,
+    callback: callback_url 
+  });
 
   // try {
 
