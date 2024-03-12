@@ -40,19 +40,15 @@ export async function POST(
 
 
   const tx_reference = uuidv4();;
-  // const return_url = `${process.env.NEXT_PUBLIC_APP_URL}/courses/${params.courseId}`;
-  // const return_url = `https://prototype-omega-cyan.vercel.app/courses/${params.courseId}`;
-  const return_url = `http://localhost:3000/courses/${params.courseId}`;
-  // const callback_url = `${process.env.NEXT_PUBLIC_APP_URL}/api/verify-payment`;
-  const callback_url = `http://localhost:3000/api/verify-payment`;
-  // const callback_url = `https://prototype-omega-cyan.vercel.app/api/verify-payment`;
+  const return_url = `${process.env.NEXT_PUBLIC_APP_URL}/courses/${params.courseId}`;
+  const callback_url = `${process.env.NEXT_PUBLIC_APP_URL}/api/verify-payment`;
   const chapa_data = {
     currency: "ETB",
     first_name: "F",
     last_name: "L",
     amount: `${course?.price}`,
     tx_ref: tx_reference,
-    // callback_url: callback_url,
+    callback_url: callback_url,
     return_url: return_url
   }
 
