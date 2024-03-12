@@ -74,7 +74,7 @@ export async function POST(
   })
   // return NextResponse.json({ url: checkout_url });
   return NextResponse.json({
-    return: return_url,
+    return: process.env.NEXT_PUBLIC_VERCEL_URL,
     callback: callback_url 
   });
 
