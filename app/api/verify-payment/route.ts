@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { ChapaTransaction, Course } from "@prisma/client"
+import { NextResponse } from "next/server";
 
 export async function GET(
     req: Request) {
@@ -26,15 +27,14 @@ export async function GET(
                     userId: transaction.userId,
                 }
             });
+            console.log("[CALLBACK RAN]: Success")
+
             return Response.json({ status: "Transaction Success" });
         } catch (error) {
             throw new Error("Transaction Data not found")
         }
 
     }
+    console.log("[CALLBACK RAN]: Error")
     return Response.json({ status: "Transaction Not Success" });
-
-
-    // return new NextResponse("Internal Error", { status: 500 });
-
 }
