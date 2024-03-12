@@ -3,7 +3,7 @@ const nextConfig = {
     images: {
         domains:[
             "utfs.io",
-            "inferred.litix.io/ "
+            "litix.io"
         ]
     }
 };

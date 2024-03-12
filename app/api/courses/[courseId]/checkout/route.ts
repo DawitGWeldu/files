@@ -42,24 +42,23 @@ export async function POST(
   const tx_reference = uuidv4();;
   const return_url = `${process.env.NEXT_PUBLIC_APP_URL}/courses/${params.courseId}`;
   const callback_url = `${process.env.NEXT_PUBLIC_APP_URL}/api/verify-payment`;
-  const chapa_data = {
-    currency: "ETB",
-    first_name: "F",
-    last_name: "L",
-    amount: `${course?.price}`,
-    tx_ref: tx_reference,
-    callback_url: callback_url,
-    return_url: return_url
-  }
 
   let checkout_url = null;
   const res = await axios({
     method: "post",
     url: "https://api.chapa.co/v1/transaction/initialize",
     headers: {
-      "Authorization": "Bearer " + process.env.CHAPA_SECRET_KEY
+      "Authorization": "Bearer CHASECK_TEST-jlm8m3ZJiu9pNuvWiougRYAJ0moD3mqt"
     },
-    data: chapa_data
+    data: {
+      currency: "ETB",
+      first_name: "F",
+      last_name: "L",
+      amount: 100,
+      tx_ref: tx_reference,
+      callback_url: callback_url,
+      return_url: return_url
+    }
   })
 
   if (res.data.status == "success") {
