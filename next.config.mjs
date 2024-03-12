@@ -7,7 +7,8 @@ const nextConfig = {
         ]
     },
     env: {
-        NEXT_PUBLIC_APP_URL: `https://${process.env.VERCEL_URL}`,
+        // NEXT_PUBLIC_APP_URL: `https://${process.env.VERCEL_URL}`,
+        NEXT_PUBLIC_APP_URL: `https://prototype-omega-cyan.vercel.app`,
     },
 };
 
