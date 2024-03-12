@@ -19,18 +19,17 @@ export const CourseEnrollButton = ({
   courseId,
 }: CourseEnrollButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter
+  const router = useRouter()
   const onClick = async () => {
     try {
       setIsLoading(true);
-      "use server"
-
       const response = await axios.post(`/api/courses/${courseId}/checkout`)
-
-      window.location.assign(response.data.url);
+      // window.location.assign(response.data.url);
+      console.log("[COURSE CHECKOUT URL]: ",JSON.stringify(response.data));
 
     } catch {
       toast.error("Something went wrong");
+      return 
     } finally {
       setIsLoading(false);
     }
