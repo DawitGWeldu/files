@@ -56,8 +56,8 @@ export async function POST(
       last_name: "L",
       amount: 100,
       tx_ref: tx_reference,
-      callback_url: callback_url,
-      return_url: return_url
+      // callback_url: callback_url,
+      // return_url: return_url
     }
   })
 
