@@ -6,7 +6,7 @@ export async function GET(
     req: NextRequest) {
     const searchParams  = req.nextUrl.searchParams;
     const status = searchParams.get("status");
-    console.log("[CALLBACK RAN]: [QUERY PARAMS]: ", JSON.stringify(searchParams))
+    console.log("[CALLBACK RAN]: [QUERY PARAMS]: ", JSON.stringify(req))
 
     let tx_ref: string = "";
     if (status == "success") {
