@@ -14,7 +14,7 @@ const nextConfig = {
         {
           source: '/api/:path*', // Matches all API routes
           headers: [
-            { key: 'Access-Control-Allow-Origin', value: 'https://api.chapa.co' }, // Replace with Chapa's exact domain
+            { key: 'Access-Control-Allow-Origin', value: '*' }, // Replace with Chapa's exact domain
             { key: 'Access-Control-Allow-Methods', value: 'GET, POST, OPTIONS' }, // Adjust methods based on your API routes
             { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Authorization' }, // Adjust headers if needed
           ],
