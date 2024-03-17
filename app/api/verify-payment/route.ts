@@ -11,7 +11,7 @@ async function OPTIONS(req: NextApiRequest, res: NextApiResponse) {
     res.status(200).end(); 
 }
 
-export async function handler(
+export async function GET(
     req: NextApiRequest) {
     // const searchParams = req.url?.search("status");
     console.log("[CALLBACK RAN]: [QUERY PARAMS]? ", req.url)
@@ -45,4 +45,4 @@ export async function handler(
     // }
     return NextResponse.json({ "headers": req.headers, "url": req.url }, { status: 200 });
 }
-handler.options = OPTIONS; 
+GET.options = OPTIONS; 

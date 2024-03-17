@@ -10,24 +10,17 @@ const nextConfig = {
         NEXT_PUBLIC_APP_URL: `https://danielgetachew.tech`,
         // NEXT_PUBLIC_APP_URL: `http://localhost:3000`,
     },
-    api: {
-        bodyParser: false, // Optional: Disable body parsing for API routes if not needed
-        externalResolver: true, // Optional: Enables external resolvers for API routes
-        headers: [
-          {
-            key: 'Access-Control-Allow-Origin',
-            value: '*', // Replace '*' with specific origins if needed
-          },
-          {
-            key: 'Access-Control-Allow-Methods',
-            value: 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-          },
-          {
-            key: 'Access-Control-Allow-Headers',
-            value: 'Content-Type, Authorization',
-          },
+    headers: async () => [
+        {
+          source: '/api/:path*', // Matches all API routes
+          headers: [
+            { key: "Access-Control-Allow-Credentials", value: "true" },
+            { key: 'Access-Control-Allow-Origin', value: '*' }, // Replace with Chapa's exact domain
+            { key: "Access-Control-Allow-Methods", value: "GET,DELETE,PATCH,POST,PUT" },
+            { key: "Access-Control-Allow-Headers", value: "*" },
         ],
-      },
+        },
+    ],
 };
 
 export default nextConfig;
