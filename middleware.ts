@@ -14,7 +14,7 @@ const { auth } = NextAuth(authConfig);
 export default auth((req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
-  const isCallbackRoute = nextUrl.pathname.includes("/verify-payment")
+  const isApiRoute = nextUrl.pathname.includes("/api")
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
@@ -23,7 +23,7 @@ export default auth((req) => {
     return;
   }
 
-  if (isCallbackRoute) {
+  if (isApiRoute) {
     // retrieve the current response
     const res = NextResponse.next()
 

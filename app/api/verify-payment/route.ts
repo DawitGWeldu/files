@@ -1,12 +1,20 @@
 import { db } from "@/lib/db";
 import { ChapaTransaction, Course } from "@prisma/client"
-import { NextRequest, NextResponse } from "next/server";
+import { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from "next/server";
 
-export async function GET(
-    req: NextRequest) {
-    const searchParams  = req.nextUrl.searchParams;
-    const status = searchParams.has("status");
-    console.log("[CALLBACK RAN]: [QUERY PARAMS]: ", JSON.stringify(req.url))
+async function OPTIONS(req: NextApiRequest, res: NextApiResponse) {
+    res.setHeader('Access-Control-Allow-Origin', '*'); // Replace '*' with specific origins if needed
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Max-Age', '600');
+    res.status(200).end(); 
+}
+
+export async function handler(
+    req: NextApiRequest) {
+    // const searchParams = req.url?.search("status");
+    console.log("[CALLBACK RAN]: [QUERY PARAMS]? ", req.url)
 
     // let tx_ref: string = "";
     // if (status == "success") {
@@ -35,6 +43,6 @@ export async function GET(
     //     }
 
     // }
-    console.log("[CALLBACK RAN]: Error")
-    return NextResponse.json({"headers" :req.headers, "url": req.url },{status: 200 });
+    return NextResponse.json({ "headers": req.headers, "url": req.url }, { status: 200 });
 }
+handler.options = OPTIONS; 
