@@ -7,26 +7,44 @@ import {
   authRoutes,
   publicRoutes,
 } from "@/routes";
+import { NextResponse } from "next/server";
 
 const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
-
+  const isCallbackRoute = nextUrl.pathname.includes("/verify-payment")
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
   if (isApiAuthRoute) {
-    return ;
+    return;
+  }
+
+  if (isCallbackRoute) {
+    // retrieve the current response
+    const res = NextResponse.next()
+
+    req.headers.get("origin")
+
+    res.headers.append('Access-Control-Allow-Origin', origin);
+    res.headers.append('Access-Control-Allow-Credentials', "true")
+    res.headers.append('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT')
+    res.headers.append(
+      'Access-Control-Allow-Headers',
+      'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    )
+
+    return res
   }
 
   if (isAuthRoute) {
     if (isLoggedIn) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
     }
-    return ;
+    return;
   }
 
   if (!isLoggedIn && !isPublicRoute) {
@@ -43,10 +61,9 @@ export default auth((req) => {
     ));
   }
 
-  return ;
+  return;
 })
 
-// Optionally, don't invoke Middleware on some paths
 export const config = {
   matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
 }
