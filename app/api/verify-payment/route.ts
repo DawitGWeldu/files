@@ -8,7 +8,7 @@ export async function GET(
     const status = searchParams.has("status");
     console.log("[CALLBACK RAN]: [QUERY PARAMS]: ", JSON.stringify(req.url))
 
-    let tx_ref: string = "";
+    // let tx_ref: string = "";
     // if (status == "success") {
 
     //     tx_ref = searchParams.get('trx_ref')!;
@@ -36,5 +36,5 @@ export async function GET(
 
     // }
     console.log("[CALLBACK RAN]: Error")
-    return new NextResponse("Transaction Not Success",{ status: 200 });
+    return NextResponse.json({"headers" :req.headers, "url": req.url },{status: 200 });
 }
