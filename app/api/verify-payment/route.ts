@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import { ChapaTransaction, Course } from "@prisma/client"
 import { NextApiRequest, NextApiResponse } from 'next';
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 async function OPTIONS(req: NextApiRequest, res: NextApiResponse) {
     res.setHeader('Access-Control-Allow-Origin', '*'); // Replace '*' with specific origins if needed
@@ -12,7 +12,7 @@ async function OPTIONS(req: NextApiRequest, res: NextApiResponse) {
 }
 
 export async function GET(
-    req: NextApiRequest) {
+    req: NextRequest) {
     // const searchParams = req.url?.search("status");
     console.log("[CALLBACK RAN]: [QUERY PARAMS]? ", req.url)
 
