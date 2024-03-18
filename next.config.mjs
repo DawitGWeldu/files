@@ -5,22 +5,33 @@ const nextConfig = {
             "utfs.io",
         ]
     },
+    poweredByHeader: false,
     env: {
         // NEXT_PUBLIC_APP_URL: `https://${process.env.VERCEL_URL}`,
         NEXT_PUBLIC_APP_URL: `https://danielgetachew.tech`,
         // NEXT_PUBLIC_APP_URL: `http://localhost:3000`,
     },
-    headers: async () => [
-        {
-          source: '/api/:path*', // Matches all API routes
-          headers: [
-            { key: "Access-Control-Allow-Credentials", value: "true" },
-            { key: 'Access-Control-Allow-Origin', value: '*' }, // Replace with Chapa's exact domain
-            { key: "Access-Control-Allow-Methods", value: "GET,DELETE,PATCH,POST,PUT" },
-            { key: "Access-Control-Allow-Headers", value: "*" },
-        ],
-        },
-    ],
+    async headers() {
+        return [
+          {
+            source: "/api/:path*",
+            headers: [
+              {
+                key: "Access-Control-Allow-Origin",
+                value: "*", // Set your origin
+              },
+              {
+                key: "Access-Control-Allow-Methods",
+                value: "GET, POST, PUT, DELETE, OPTIONS",
+              },
+              {
+                key: "Access-Control-Allow-Headers",
+                value: "Content-Type, Authorization",
+              },
+            ],
+          },
+        ];
+      },
 };
 
 export default nextConfig;
