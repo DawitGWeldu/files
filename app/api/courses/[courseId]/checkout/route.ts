@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import axios from "axios"
 import { db } from "@/lib/db";
 import { Course } from "@prisma/client";
+import { NextApiRequest, NextApiResponse } from "next";
 
 export async function POST(
   req: Request,
@@ -25,6 +26,12 @@ export async function POST(
       isPublished: true,
     }
   })
+  const chapter = await db.chapter.findFirst({
+    where: {
+      courseId: params.courseId,
+      isPublished: true,
+    }
+  })
   const purchase = await db.purchase.findUnique({
     where: {
       userId_courseId: {
@@ -40,8 +47,8 @@ export async function POST(
 
 
   const tx_reference = uuidv4();;
-  const return_url = `${process.env.NEXT_PUBLIC_APP_URL}/courses/${params.courseId}`;
-  const callback_url = `${process.env.NEXT_PUBLIC_APP_URL}/api/verify-payment`;
+  const return_url = `${process.env.NEXT_PUBLIC_APP_URL}/courses/${params.courseId}/chapters/${chapter?.id}`;
+  const callback_url = `${process.env.NEXT_PUBLIC_APP_URL}/courses/${params.courseId}/chapters/${chapter?.id}`;
 
   let checkout_url = null;
   const res = await axios({
@@ -73,4 +80,44 @@ export async function POST(
     }
   })
   return NextResponse.json({ url: checkout_url });
+}
+
+
+export async function GET(
+  req: Request) {
+  const url = req.clone().url;
+  const search = new URL(url);
+  const searchParams = new URLSearchParams(url);
+  console.log("[CALLBACK RAN]: [status]? ", url, searchParams)
+
+  // let tx_ref: string = "";
+  // if (searchParams.has("status")) {
+  //     if (searchParams.get("status") != "success") {
+  //         return Response.json({ status: "Transaction Failed" });
+  //     }
+  //     tx_ref = searchParams.get('trx_ref')!;
+  //     try {
+  //         const transaction = await db.chapaTransaction.findFirst({
+  //             where: {
+  //                 tx_ref: searchParams.get('trx_ref')!,
+  //                 status: 'PENDING'
+  //             }
+  //         })
+  //         console.log("[TRANSACTION]: ", JSON.stringify(transaction))
+
+  //         await db.purchase.create({
+  //             data: {
+  //                 courseId: transaction!.courseId,
+  //                 userId: transaction!.userId,
+  //             }
+  //         });
+  //         console.log("[CALLBACK RAN]: Success")
+
+  //         return Response.json({ status: "Transaction Success" });
+  //     } catch (error) {
+  //         throw new Error("Transaction Data not found")
+  //     }
+
+  // }
+  return NextResponse.json({ "message": "200" }, { status: 200 });
 }

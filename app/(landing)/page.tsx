@@ -39,6 +39,7 @@ export default function Home() {
                 Get Started
               </Link>
             </LoginButton>
+            <p className="max-w-[42rem] leading-normal text-muted-foreground sm:leading-8 mt-4">Use Phone number: 0994697123 & Password: 123456 for testing.</p>
             {/* <Link
               href={siteConfig.links.github}
               target="_blank"

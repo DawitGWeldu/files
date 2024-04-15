@@ -24,14 +24,14 @@ export const CourseEnrollButton = ({
     try {
       setIsLoading(true);
       const response = await axios.post(`/api/courses/${courseId}/checkout`)
-      if(response){
+      if (response) {
         window.location.assign(response.data.url);
+        setIsLoading(false);
       }
     } catch {
       toast.error("Something went wrong");
-      return 
-    } finally {
       setIsLoading(false);
+      return
     }
   }
 
@@ -43,11 +43,11 @@ export const CourseEnrollButton = ({
       className="w-full md:w-44"
     >
       {isLoading ? (
-        <BeatLoader size={10} color="background"/>
-      ): (
+        <BeatLoader size={10} color="background" />
+      ) : (
         `Enroll for ${formatPrice(price)}`
       )}
-      
+
     </Button>
   )
 }

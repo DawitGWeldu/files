@@ -11,41 +11,49 @@ async function OPTIONS(req: NextApiRequest, res: NextApiResponse) {
     res.status(200).end();
     console.log()
 }
-
-export async function GET(
-    req: NextRequest) {
-    const searchParams = req.nextUrl.searchParams;
-    console.log("[CALLBACK RAN]: [QUERY PARAMS]? ", searchParams)
-
-    let tx_ref: string = "";
-    if (searchParams.has("status")) {
-        if (searchParams.get("status") != "success") {
-            return Response.json({ status: "Transaction Failed" });
-        }
-        tx_ref = searchParams.get('trx_ref')!;
-        try {
-            const transaction = await db.chapaTransaction.findFirst({
-                where: {
-                    tx_ref: searchParams.get('trx_ref')!,
-                    status: 'PENDING'
-                }
-            })
-            console.log("[TRANSACTION]: ",JSON.stringify(transaction))
-
-            await db.purchase.create({
-                data: {
-                    courseId: transaction!.courseId,
-                    userId: transaction!.userId,
-                }
-            });
-            console.log("[CALLBACK RAN]: Success")
-
-            return Response.json({ status: "Transaction Success" });
-        } catch (error) {
-            throw new Error("Transaction Data not found")
-        }
-
-    }
-    return NextResponse.json({ "headers": req.headers, "url": req.url }, { status: 200 });
+type Params = {
+    status?: string
+    trx_ref?: string
+    callback?: string
+    _?: string
 }
+export async function GET(
+    req: NextRequest, context: { params: Params }) {
+    const url = req.clone().url;
+    const search = new URL(url);
+    // const searchParams = new URLSearchParams(search);
+    console.log("[CALLBACK RAN]: [status]? ", url)
+
+    // let tx_ref: string = "";
+    // if (searchParams.has("status")) {
+    //     if (searchParams.get("status") != "success") {
+    //         return Response.json({ status: "Transaction Failed" });
+    //     }
+    //     tx_ref = searchParams.get('trx_ref')!;
+    //     try {
+    //         const transaction = await db.chapaTransaction.findFirst({
+    //             where: {
+    //                 tx_ref: searchParams.get('trx_ref')!,
+    //                 status: 'PENDING'
+    //             }
+    //         })
+    //         console.log("[TRANSACTION]: ", JSON.stringify(transaction))
+
+    //         await db.purchase.create({
+    //             data: {
+    //                 courseId: transaction!.courseId,
+    //                 userId: transaction!.userId,
+    //             }
+    //         });
+    //         console.log("[CALLBACK RAN]: Success")
+
+    //         return Response.json({ status: "Transaction Success" });
+    //     } catch (error) {
+    //         throw new Error("Transaction Data not found")
+    //     }
+
+    // }
+    return NextResponse.json({ "message": "200" }, { status: 200 });
+}
+
 GET.options = OPTIONS; 
