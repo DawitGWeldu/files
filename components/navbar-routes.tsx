@@ -37,7 +37,7 @@ export const NavbarRoutes = () => {
             </Button>
           </Link>
         ) : (session?.user.role == "USER") ? (
-          <Link href="/teacher/courses">
+          <Link href="/workers">
             <Button size="sm" variant="ghost">
               Teacher mode
             </Button>

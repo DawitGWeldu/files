@@ -8,6 +8,8 @@ import { DashboardNav } from "@/components/nav";
 import { currentUser } from "@/lib/auth";
 import { notFound } from "next/navigation";
 import { ModeToggle } from "@/components/mode-toggle";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { DashSidebar } from "@/components/dash-sidebar"
 const DashboardLayout = async ({
     children
 }: {
@@ -21,34 +23,45 @@ const DashboardLayout = async ({
 
     return (
 
+        <>
 
-        <div className="flex min-h-screen flex-col space-y-6">
-            <header className="sticky top-0 z-40 border-b bg-background">
-                <div className="container flex h-16 items-center justify-between py-4">
-                    <MainNav items={dashboardConfig.mainNav} />
-                    <span className="flex items-ceter gap-4 justify-between">
-                        <ModeToggle />
+            <SidebarProvider>
 
-                        <UserAccountNav
-                            user={{
-                                name: user.name,
-                                image: user.image,
-                                phoneNumber: user.phoneNumber,
-                            }}
-                        />
+
+
+                <DashSidebar />
+
+                <main className="flex w-full flex-1 flex-col overflow-hidden justify-between">
+
+                    <span className="px-6 h-16 shadow-sm py-2 flex items-ceter gap-4 justify-between">
+                        <span className="flex gap-6 items-center">
+                            <SidebarTrigger />
+                            {/* <MainNav items={dashboardConfig.mainNav} /> */}
+                        </span>
+
+                        <span className="flex gap-6 items-center">
+                            <ModeToggle />
+
+                            <UserAccountNav
+                                user={{
+                                    name: user.name,
+                                    image: user.image,
+                                    phoneNumber: user.phoneNumber,
+                                }}
+                            />
+                        </span>
+
+
                     </span>
-                </div>
-            </header>
-            <div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
-                <aside className="hidden w-[200px] flex-col md:flex">
-                    <DashboardNav items={dashboardConfig.sidebarNav} />
-                </aside>
-                <main className="flex w-full flex-1 flex-col overflow-hidden">
-                    {children}
+
+                    <span className="p-8">
+                        {children}
+
+                    </span>
+                    <SiteFooter className="border-t" />
                 </main>
-            </div>
-            <SiteFooter className="border-t" />
-        </div>
+            </SidebarProvider>
+        </>
 
     );
 }

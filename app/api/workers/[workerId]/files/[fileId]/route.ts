@@ -39,3 +39,33 @@ export async function DELETE(
   }
 }
 
+
+
+export async function PATCH(
+  req: Request,
+  { params }: { params: { workerId: string, fileId: string } }
+) {
+  try {
+    const user = await currentUser();
+    const { workerId, fileId } = params;
+    const values = await req.json();
+
+    if (!user?.id) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const file = await db.file.update({
+      where: {
+        id: fileId,
+      },
+      data: {
+        ...values,
+      }
+    });
+
+    return NextResponse.json(file);
+  } catch (error) {
+    console.log("[FILE_ID]", error);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}

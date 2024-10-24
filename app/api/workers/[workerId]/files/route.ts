@@ -9,7 +9,7 @@ export async function POST(
 ) {
   try {
     const user = await currentUser();
-    const { url = null, name = null, status = null, attachmentId } = await req.json();
+    const { url, name = null, status = null, attachmentId } = await req.json();
 
     if (!user?.id) {
       return new NextResponse("Unauthorized", { status: 401 });

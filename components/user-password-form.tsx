@@ -23,13 +23,13 @@ import { Label } from "@/components/ui/label"
 // import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 
-interface UserNameFormProps extends React.HTMLAttributes<HTMLFormElement> {
-  user: Pick<User, "id" | "name">
+interface UserPasswordFormProps extends React.HTMLAttributes<HTMLFormElement> {
+  user: Pick<User, "id" | "password">
 }
 
 // type FormData = z.infer<typeof userNameSchema>
 
-export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
+export function UserPasswordForm({ user, className, ...props }: UserPasswordFormProps) {
   const router = useRouter()
   const {
     handleSubmit,
@@ -52,7 +52,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: data,
+        password: data,
       }),
     })
 
@@ -74,6 +74,8 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
   
   }
   return (
+
+    
     <form
       className={cn(className)}
       onSubmit={handleSubmit(onSubmit)}
@@ -81,15 +83,45 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
     >
       <Card>
         <CardHeader>
-          <CardTitle>Your Name</CardTitle>
-          <CardDescription>
-            Please enter your full name.
-          </CardDescription>
+          <CardTitle>Change your password</CardTitle>
+          
         </CardHeader>
         <CardContent>
-          <div className="grid gap-1">
+          <div className="grid gap-3">
             <Label htmlFor="name">
-              Name
+              Old Password
+            </Label>
+            <Input
+              id="name"
+              className="w-[400px]"
+              size={32}
+              // {...register("name")}
+            />
+            {/* {errors?.name && (
+              <p className="px-1 text-xs text-red-600">{errors.name.message}</p>
+            )} */}
+          </div>
+
+
+          <div className="grid gap-3">
+            <Label htmlFor="name">
+              New Password
+            </Label>
+            <Input
+              id="name"
+              className="w-[400px]"
+              size={32}
+              // {...register("name")}
+            />
+            {/* {errors?.name && (
+              <p className="px-1 text-xs text-red-600">{errors.name.message}</p>
+            )} */}
+          </div>
+
+
+          <div className="grid gap-3">
+            <Label htmlFor="name">
+              Confirm new Password
             </Label>
             <Input
               id="name"
