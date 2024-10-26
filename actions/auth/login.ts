@@ -77,21 +77,6 @@ export const login = async (
         where: { id: twoFactorToken.id }
       });
 
-      const existingConfirmation = await getTwoFactorConfirmationByUserId(
-        existingUser.id
-      );
-
-      if (existingConfirmation) {
-        await db.twoFactorConfirmation.delete({
-          where: { id: existingConfirmation.id }
-        });
-      }
-
-      await db.twoFactorConfirmation.create({
-        data: {
-          userId: existingUser.id,
-        }
-      });
     } else {
       await sendTwoFactorTokenSms(
         existingUser.phoneNumber,
