@@ -35,8 +35,12 @@ export const FileForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post(`/api/workers/${workerId}/files`, values);
-      toast.success("Worker updated");
+      if (values.url) {
+        var name = values.url?.split("/").pop()
+      }
+      const val = { ...values, name: name || '', attachmentId: initialData.id, workerId: workerId }
+      await axios.patch(`/api/workers/${workerId}/files/${undefined}`, val);
+      toast.success("File Uploaded");
       toggleEdit();
       router.refresh();
     } catch {
@@ -58,19 +62,19 @@ export const FileForm = ({
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader className="bg-gradient-to-tr from-secondary/50 to-secondary/0 py-2">
+    <Card className="w-full max-w-md mt-4">
+      <CardHeader className=" py-2">
         <CardTitle className="flex items-center justify-between text-base font-medium" >
-            <span className="truncate">{initialData.name}</span>
+          <span className="truncate">{initialData.name}</span>
 
-            <Button onClick={toggleEdit} variant="ghost" size="icon" className="h-8 w-8">
-              {isEditing ? (
-                <X className="h-4 w-4" />
-              ) : (
-                <Pencil className="h-4 w-4" />
-              )}
-              <span className="sr-only">{isEditing ? "Cancel" : "Edit"}</span>
-            </Button>
+          <Button onClick={toggleEdit} variant="ghost" size="icon" className="h-8 w-8">
+            {isEditing ? (
+              <X className="h-4 w-4" />
+            ) : (
+              <Pencil className="h-4 w-4" />
+            )}
+            <span className="sr-only">{isEditing ? "Cancel" : "Edit"}</span>
+          </Button>
         </CardTitle>
       </CardHeader>
 
@@ -78,7 +82,7 @@ export const FileForm = ({
         {!isEditing && (
           <>
             {initialData.files.filter(file => file.url != '').length === 0 && (
-              <p className="text-sm mt-2 text-slate-500 italic">
+              <p className="text-sm text-slate-500 italic">
                 please, upload the required file
               </p>
             )}
@@ -87,10 +91,11 @@ export const FileForm = ({
                 {initialData.files.map((file) => (
                   <div
                     key={file.id}
-                    className="flex items-center p-3 w-full bg-sky-100 border-sky-200 border text-sky-700 rounded-md"
+                    className="flex items-center p-2 w-full bg-sky-100 border-sky-200 border text-sky-700 rounded-md"
                   >
-                    <a href={file.url!} className="text-xs line-clamp-1">
-                      {file.url}
+                    <a href={file.url!} className="text-xs inline-block max-w-full overflow-hidden whitespace-nowrap">
+                      {file.name!.substring(0, file.name!.length - 7)}...
+                      {file.name!.substring(file.name!.length - 3)}
                     </a>
                     {deletingId === file.id && (
                       <div>
@@ -123,9 +128,6 @@ export const FileForm = ({
                 }
               }}
             />
-            <div className="text-xs text-muted-foreground mt-4">
-              File size must be under 4mb
-            </div>
           </div>
         )}
       </CardContent>

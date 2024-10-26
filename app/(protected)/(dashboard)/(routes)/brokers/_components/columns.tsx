@@ -1,9 +1,11 @@
 "use client"
 
-import { User, Worker } from "@prisma/client"
+import { Worker } from "@prisma/client"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, MoreHorizontal, Pencil } from "lucide-react"
 import Link from "next/link";
+import * as z from "zod";
+
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,13 +16,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { db } from "@/lib/db";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { Switch } from "@/components/ui/switch";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { Fragment } from "react";
 
+export const columns: ColumnDef<Worker>[] = [
 
-type workerWithUser = Worker & {
-  user: User
-}
-
-export const columns: ColumnDef<workerWithUser>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -36,102 +42,89 @@ export const columns: ColumnDef<workerWithUser>[] = [
     },
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: "phoneNumber",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Date registered
+          Phone number
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+  },
+  {
+    accessorKey: "phoneNumberVerified",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Account Status
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
     cell: ({ row }) => {
-      const dateReg = row.getValue("createdAt");
-      // const dt = dateReg.
-      //@ts-ignore
-      const dt = new Date(dateReg).toLocaleString('en-us', { year:"numeric", month:"short", day:"numeric"})
-      
+      const isActive = (row.getValue("phoneNumberVerified") ? true : false);
+      const idd = row.getValue("phoneNumber");
+
+      const onSubmit = async () => {
+        try {
+
+          await axios.patch(`/api/brokers/${idd}`, {isActive, idd});
+          toast.success(`Updated`);
+          window.location.reload()
+        } catch {
+          toast.error("Something went wrong");
+        }
+      }
       return (
-        <span>
-          {dt}
+        <span className='flex flex-row gap-2 items-center '>
+          <Badge className={cn(
+            "bg-slate-500",
+            isActive && "bg-green-700"
+          )}>
+            {isActive ? "Active" : "Inactive"}
+          </Badge>
+
+          <Switch
+            checked={isActive}
+            onCheckedChange={onSubmit}
+          />
+
         </span>
+
       )
     }
   },
   {
-    accessorKey: "user",
+    accessorKey: "Workers",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Registered by
+          Workers registered
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
     cell: ({ row }) => {
-      const user: User = row.getValue("user");
-      return (
-        <span>
-          {user.name}
-        </span>
-      )
-    }
-  },
-  
-  {
-    accessorKey: "isComplete",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Status
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => {
-      const isComplete = row.getValue("isComplete") || false;
+      const totalWorkers: Worker[] = row.getValue('Workers')
 
       return (
         <Badge className={cn(
           "bg-slate-500",
-          isComplete && "bg-sky-700"
+          totalWorkers.length > 0 && "bg-green-700"
         )}>
-          {isComplete ? "Complete" : "Incomplete"}
+          {/* {totalWorkers! >= 0 ? totalWorkers : 0} */}
+          {totalWorkers.length}
         </Badge>
-      )
-    }
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const { id } = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-4 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <Link href={`/workers/${id}`}>
-              <DropdownMenuItem>
-                <Pencil className="h-4 w-4 mr-2" />
-                Edit
-              </DropdownMenuItem>
-            </Link>
-          </DropdownMenuContent>
-        </DropdownMenu>
       )
     }
   }

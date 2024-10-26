@@ -17,6 +17,11 @@ export const FileUpload = ({
   return (
     <UploadDropzone
       endpoint={endpoint}
+      content={{
+        uploadIcon: ' ',
+        allowedContent: 'File size must be under 4mb',
+      }}
+      className="h-1/4 p-2"
       onClientUploadComplete={(res) => {
         onChange(res?.[0].url);
       }}

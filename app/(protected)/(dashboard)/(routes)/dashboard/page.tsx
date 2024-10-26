@@ -1,8 +1,7 @@
 import { redirect } from "next/navigation";
 import { CheckCircle, Clock } from "lucide-react";
 
-import { getDashboardCourses } from "@/actions/get-dashboard-courses";
-import { CoursesList } from "@/components/courses-list";
+import { getDashboardWorkers } from "@/actions/get-dashboard-workers";
 import { currentUser } from "@/lib/auth";
 
 import { InfoCard } from "./_components/info-card";
@@ -15,9 +14,9 @@ export default async function Dashboard() {
   }
 
   const {
-    completedCourses,
-    coursesInProgress
-  } = await getDashboardCourses(user.id);
+    completedWorkers,
+    workersInProgress
+  } = await getDashboardWorkers(user.id, user.role);
 
   return (
     <div className="p-6 space-y-4">
@@ -25,18 +24,15 @@ export default async function Dashboard() {
        <InfoCard
           icon={Clock}
           label="In Progress"
-          numberOfItems={coursesInProgress.length}
+          numberOfItems={workersInProgress?.length || 0}
        />
        <InfoCard
           icon={CheckCircle}
           label="Completed"
-          numberOfItems={completedCourses.length}
+          numberOfItems={completedWorkers?.length || 0}
           variant="success"
        />
       </div>
-      <CoursesList
-        items={[...coursesInProgress, ...completedCourses]}
-      />
     </div>
   )
 }

@@ -29,7 +29,7 @@ CREATE TABLE "Worker" (
     "idImage" TEXT,
     "isComplete" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Worker_pkey" PRIMARY KEY ("id")
 );
@@ -69,8 +69,9 @@ CREATE TABLE "Attachment" (
     "id" TEXT NOT NULL,
     "name" TEXT,
     "type" TEXT,
+    "position" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "requirementId" TEXT NOT NULL,
 
     CONSTRAINT "Attachment_pkey" PRIMARY KEY ("id")
@@ -86,7 +87,7 @@ CREATE TABLE "File" (
     "workerId" TEXT NOT NULL,
     "attachmentId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "File_pkey" PRIMARY KEY ("id")
 );
@@ -95,8 +96,9 @@ CREATE TABLE "File" (
 CREATE TABLE "Requirement" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
+    "position" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Requirement_pkey" PRIMARY KEY ("id")
 );

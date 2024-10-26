@@ -66,12 +66,12 @@ export const NewVerificationForm = () => {
   return (
 
       <CardWrapper
-        headerLabel="Verify your phone number"
-        headerAction="Enter the code you recieved"
+        headerLabel="Your account has been created."
+        headerAction="You can log in once your account is approved by the admin."
         footerLabel=""
         footerHref=""
       >
-        <Form {...form}>
+        {/* <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-6"
@@ -102,7 +102,10 @@ export const NewVerificationForm = () => {
             <FormSuccess message={success} />
             <Button className="w-full" type="submit">Submit</Button>
           </form>
-        </Form>
+        </Form> */}
+        <span>
+          
+        </span>
       </CardWrapper>
   )
 }

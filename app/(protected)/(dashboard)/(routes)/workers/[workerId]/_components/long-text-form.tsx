@@ -44,7 +44,7 @@ export const LongTextForm = ({
 
     const toggleEdit = () => {
         setIsEditing((current) => !current);
-        form.setValue("text", initialData?.files[0].text || "")
+        form.setValue("text", initialData?.files[0]?.text || "")
 
     }
     const router = useRouter();
@@ -52,7 +52,7 @@ export const LongTextForm = ({
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            text: initialData?.files[0].text || ""
+            text: initialData?.files[0]?.text || ""
         },
     });
 
@@ -60,11 +60,15 @@ export const LongTextForm = ({
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            await axios.patch(`/api/workers/${initialData.files[0].workerId}/files/${initialData.files[0].id}`, values);
-            toast.success(`${initialData.name} Updated`);
-            toggleEdit();
-            router.refresh();
+        const val = { ...values, attachmentId: initialData.id, workerId: workerId }
+
+        await axios.patch(`/api/workers/${workerId}/files/${initialData.files[0]?.id}`, val);
+        toggleEdit();
+        toast.success(`${initialData.name} Updated`);
+        router.refresh();
+
         } catch {
+
             toast.error("Something went wrong");
         }
     }
@@ -73,7 +77,7 @@ export const LongTextForm = ({
 
     return (
         <Card className="w-full max-w-md mt-4">
-            <CardHeader className="bg-gradient-to-tr from-secondary/50 to-secondary/0 py-2">
+            <CardHeader className="py-2">
                 <CardTitle className="flex items-center justify-between text-base font-medium" >
                     <span className="truncate">{initialData.name}</span>
                     <Button onClick={toggleEdit} variant="ghost" size="icon" className="h-8 w-8">
@@ -89,17 +93,17 @@ export const LongTextForm = ({
             <CardContent className="p-4 bg-gradient-to-br from-background to-secondary/20">
                 {!isEditing && (
                     <div className="flex items-center justify-between">
-                        <span className={`text-sm font-medium ${!initialData.files[0].text && "text-yellow-600"}`}>
-                            {initialData.files[0].text || "No description"}
+                        <span className={`text-sm font-medium ${!initialData.files[0]?.text && "italic font-normal"}`}>
+                            {initialData.files[0]?.text || "No text"}
                         </span>
                     </div>
                 )}
-                
+
                 {isEditing && (
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(onSubmit)}
-                            className="space-y-4 mt-4"
+                            className="space-y-2"
                         >
                             <FormField
                                 control={form.control}
@@ -123,7 +127,8 @@ export const LongTextForm = ({
                                     disabled={!isValid || isSubmitting}
                                     type="submit"
                                 >
-                                    Save
+                                    {!initialData.files[0]?.text ? 'Save' : 'Update'}
+
                                 </Button>
                             </div>
                         </form>

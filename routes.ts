@@ -32,4 +32,4 @@ export const authRoutes = [
 export const apiAuthPrefix = "/api/auth";
 
 
-export const DEFAULT_LOGIN_REDIRECT = "/search";
+export const DEFAULT_LOGIN_REDIRECT = "/workers";

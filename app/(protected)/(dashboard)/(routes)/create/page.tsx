@@ -22,9 +22,6 @@ import axios from "axios";
 const formSchema = z.object({
     name: z.string().min(1, {
         message: "Name is required",
-    }),
-    phoneNumber: z.string().min(9, {
-        message: "Phone number is required",
     })
 })
 
@@ -33,8 +30,7 @@ const CreatePage = () => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
-            phoneNumber: ""
+            name: ""
         }
     });
 
@@ -57,7 +53,7 @@ const CreatePage = () => {
                 <div className="text-center">
                     <h1 className="text-2xl font-bold">Register a new worker</h1>
                     <p className="text-sm text-muted-foreground mt-2">
-                        Enter the worker's details below.
+                        Enter the worker&apos;s details below.
                     </p>
                 </div>
                 <Form {...form}>
@@ -79,29 +75,6 @@ const CreatePage = () => {
                                     <FormMessage />
                                     <p id="name-description" className="sr-only">
                                         Enter the full name of the worker
-                                    </p>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="phoneNumber"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Phone number</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            disabled={isSubmitting}
-                                            placeholder="09********"
-                                            type="tel"
-                                            inputMode="numeric"
-                                            aria-describedby="phone-description"
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                    <p id="phone-description" className="sr-only">
-                                        Enter a valid phone number starting with 09 followed by 8 digits
                                     </p>
                                 </FormItem>
                             )}

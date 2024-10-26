@@ -47,23 +47,36 @@ export async function PATCH(
 ) {
   try {
     const user = await currentUser();
-    const { workerId, fileId } = params;
+    const { fileId } = params;
     const values = await req.json();
 
     if (!user?.id) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
+    console.log("{{{{{}}}}}}}: ", values)
+    if (fileId !== 'undefined') {
+      const file = await db.file.update({
+        where: {
+          id: fileId,
+        },
+        data: {
+          ...values,
+        }
+      });
+      return NextResponse.json(file);
 
-    const file = await db.file.update({
-      where: {
-        id: fileId,
-      },
-      data: {
-        ...values,
-      }
-    });
+    } else {
 
-    return NextResponse.json(file);
+      const file = await db.file.create({
+        data: {
+          ...values
+        }
+      });
+
+      return NextResponse.json(file);
+    }
+
+
   } catch (error) {
     console.log("[FILE_ID]", error);
     return new NextResponse("Internal Error", { status: 500 });

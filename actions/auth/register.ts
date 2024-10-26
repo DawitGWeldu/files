@@ -38,28 +38,28 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
   });
 
   
-  await sendVerificationSms(
-    `0${num}`,
-  ).then((res)=>{
-    saveVerificationCode(res, num);
-  }).catch((err)=>{
-    console.log("[sendVerificationSms]: "+ err);
-  });
+  // await sendVerificationSms(
+  //   `0${num}`,
+  // ).then((res)=>{
+  //   saveVerificationCode(res, num);
+  // }).catch((err)=>{
+  //   console.log("[sendVerificationSms]: "+ err);
+  // });
 
 
   // //offline test mode
   // const token = sendVerificationSms(`0${num}`);
   // saveVerificationCode(token, num);
   // //end offline mode
-  return { success: "Sending confirmation code via SMS",  };
+  return { success: "Success! Your account will be approved soon.",  };
 };
 
-const saveVerificationCode = async (code: string, phoneNumber: string) => {
-  await db.verificationToken.create({
-    data: {
-      phoneNumber,
-      token: code,
-      expires: new Date(Date.now() + 1000 * 60 * 60 * 1),
-    },
-  });
-}
+// const saveVerificationCode = async (code: string, phoneNumber: string) => {
+//   await db.verificationToken.create({
+//     data: {
+//       phoneNumber,
+//       token: code,
+//       expires: new Date(Date.now() + 1000 * 60 * 60 * 1),
+//     },
+//   });
+// }

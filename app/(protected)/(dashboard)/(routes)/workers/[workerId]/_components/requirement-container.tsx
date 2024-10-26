@@ -3,7 +3,7 @@
 import * as z from "zod";
 import axios from "axios";
 import { Pencil, PlusCircle, ImageIcon, Loader2, X } from "lucide-react";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Attachment, File, Requirement } from "@prisma/client";
@@ -51,7 +51,7 @@ export const RequirementContainer = ({
         <AccordionContent>
 
           {initialData.attachments.map((attachment, index) => (
-            <>
+            <Fragment key={index}>
               {attachment.type == "text" && (
                 <LongTextForm key={index} initialData={attachment} workerId={workerId} />
               )}
@@ -61,7 +61,7 @@ export const RequirementContainer = ({
               {attachment.type == "status" && (
                 <StatusForm key={index} initialData={attachment} workerId={workerId} />
               )}
-            </>
+            </Fragment>
           ))}
         </AccordionContent>
 

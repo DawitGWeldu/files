@@ -1,6 +1,6 @@
 "use client";
 
-import { 
+import {
   Card,
   CardContent,
   CardFooter,
@@ -30,7 +30,7 @@ export const CardWrapper = ({
   return (
     <Card className="w-[400px] ">
       <CardHeader>
-        <Header label={headerLabel} action={headerAction}/>
+        <Header label={headerLabel} action={headerAction} />
       </CardHeader>
       <CardContent>
         {children}
@@ -40,17 +40,18 @@ export const CardWrapper = ({
           <Social />
         </CardFooter>
       )}
-      <CardFooter className="flex justify-center">
-      <p className="px-8 text-center text-sm text-muted-foreground">
-          <a
-            href={footerHref}
-            className="hover:text-brand underline underline-offset-4"
-          >
-            {footerLabel}
-          </a>
-        </p>
-      </CardFooter>
-       
+      {footerLabel && (
+        <CardFooter className="flex justify-center">
+          <p className="px-8 text-center text-sm text-muted-foreground">
+            <a
+              href={footerHref}
+              className="hover:text-brand underline underline-offset-4"
+            >
+              {footerLabel}
+            </a>
+          </p>
+        </CardFooter>
+      )}
     </Card>
   );
 };

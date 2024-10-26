@@ -56,19 +56,32 @@ const WorkerIdPage = async ({
     });
 
     // console.log("Reqs: ", requirements.attachments)
+    let totalFields
+    let requiredFields
+    let completedFields
+    try {
+        const reqF = await db.attachment.findMany({
+            include: {
+                files: {
+                    where: {
+                        workerId: worker.id
+                    }
+                }
+            }
+        });
+        totalFields = reqF.length
+        requiredFields = reqF
+        completedFields = reqF.filter(att => att.files[0]?.attachmentId == att.id).length
+        console.log(completedFields)
+    } catch (error) {
+        console.log(error)
+    }
 
-    const requiredFields = [
-        worker.name,
-        worker.phoneNumber,
-        // worker.chapters.some(chapter => chapter.isPublished),
-    ];
 
-    const totalFields = requiredFields.length;
-    const completedFields = requiredFields.filter(Boolean).length;
 
     const completionText = `${completedFields} of ${totalFields} fields completed`
 
-    const isComplete = requiredFields.every(Boolean);
+    const isComplete = requiredFields?.every(Boolean);
 
     return (
         <>
@@ -88,7 +101,7 @@ const WorkerIdPage = async ({
                             Edit Worker
                         </h1>
                         <span className="text-sm text-muted-foreground">
-                            Edit {worker.name}&apos;s information and documents  
+                            Edit {worker.name}&apos;s information and documents
                         </span>
                     </div>
                     <Actions
@@ -99,9 +112,9 @@ const WorkerIdPage = async ({
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                     {requirements.map((requirement, index) => (
-                        <RequirementContainer key={index} initialData={requirement} workerId={requirement.id} />
+                        <RequirementContainer key={index} initialData={requirement} workerId={worker.id} />
                     ))}
-                   
+
                 </div>
             </div>
         </>

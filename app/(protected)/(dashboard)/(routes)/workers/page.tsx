@@ -6,7 +6,7 @@ import { db } from "@/lib/db";
 import { DataTable } from "./_components/data-table";
 import { columns } from "./_components/columns";
 
-const CoursesPage = async () => {
+const WorkersPage = async () => {
   const user = await currentUser();
 
   if (!user?.id) {
@@ -14,8 +14,11 @@ const CoursesPage = async () => {
   }
 
   const workers = await db.worker.findMany({
-    where: {
-      userId: user.id,
+    // where: {
+    //   userId: user.id,
+    // },
+    include: {
+      user: true
     },
     orderBy: {
       createdAt: "desc",
@@ -29,4 +32,4 @@ const CoursesPage = async () => {
    );
 }
  
-export default CoursesPage;
+export default WorkersPage;

@@ -44,7 +44,7 @@ model Worker {
 
   files File[]
   createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  updatedAt    DateTime      @default(now())
 }
 
 model VerificationToken {
@@ -78,8 +78,9 @@ model Attachment {
   id       String @id @default(uuid())
   name     String?
   type     String?
+  position Int?
   createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  updatedAt     DateTime    @default(now())
   requirementId String
   requirement   Requirement @relation(fields: [requirementId], references: [id], onDelete: Cascade)
 
@@ -98,74 +99,15 @@ model File {
   attachmentId String
   attachment   Attachment @relation(fields: [attachmentId], references: [id])
   createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  updatedAt     DateTime    @default(now())
 }
 
 model Requirement {
   id          String       @id @default(uuid())
   title       String
   attachments Attachment[]
+  position    Int?
+
   createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  updatedAt   DateTime     @default(now())
 }
-
-// model MuxData {
-//   id         String  @id @default(uuid())
-//   assetId    String
-//   playbackId String?
-
-//   chapterId String  @unique
-//   chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-// }
-
-// model UserProgress {
-//   id     String @id @default(uuid())
-//   userId String
-//   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-//   workerId String
-//   worker   Worker @relation(fields: [workerId], references: [id], onDelete: Cascade)
-
-//   isCompleted Boolean @default(false)
-
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-
-// }
-
-// model Purchase {
-//   id     String @id @default(uuid())
-//   userId String
-
-//   courseId String
-//   course   Course  @relation(fields: [courseId], references: [id], onDelete: Cascade)
-//   tx_ref   String?
-
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt()
-//   Worker    Worker?  @relation(fields: [workerId], references: [id])
-//   workerId  String?
-
-//   @@unique([userId, courseId])
-//   @@index([courseId])
-// }
-
-// model StripeCustomer {
-//   id               String @id @default(uuid())
-//   userId           String @unique
-//   stripeCustomerId String @unique
-
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
-
-// model ChapaTransaction {
-//   id       String            @id @default(uuid())
-//   userId   String
-//   courseId String
-//   tx_ref   String            @unique
-//   status   TransactionStatus @default(PENDING)
-
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }

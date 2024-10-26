@@ -43,7 +43,7 @@ export const StatusForm = ({
 
   const toggleEdit = () => {
     setIsEditing((current) => !current);
-    form.setValue("status", initialData?.files[0].status || false)
+    form.setValue("status", initialData?.files[0]?.status || false)
 
   }
   const router = useRouter();
@@ -51,17 +51,19 @@ export const StatusForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      status: initialData?.files[0].status || false
+      status: initialData?.files[0]?.status || false
     },
   });
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/workers/${initialData.files[0].workerId}/files/${initialData.files[0].id}`, values);
+      const val = {...values, attachmentId: initialData.id, workerId: workerId}
+      await axios.patch(`/api/workers/${workerId}/files/${initialData.files[0]?.id}`, val);
       toast.success(`${initialData.name} Updated`);
-      toggleEdit();
       router.refresh();
+      toggleEdit();
+
     } catch {
       toast.error("Something went wrong");
     }
@@ -69,7 +71,7 @@ export const StatusForm = ({
 
   return (
     <Card className="w-full max-w-md mt-4">
-      <CardHeader className="bg-gradient-to-tr from-secondary/50 to-secondary/0 py-2">
+      <CardHeader className="py-2">
         <CardTitle className="flex items-center justify-between text-base font-medium" >
           <span className="truncate">{initialData.name}</span>
 
@@ -90,10 +92,10 @@ export const StatusForm = ({
             <span className="text-sm font-medium">Status</span>
             <span
               className={`text-sm font-medium ${
-                initialData.files[0].status ? "text-green-600" : "text-yellow-600"
+                initialData.files[0]?.status ? "text-green-600" : "text-yellow-600 italic"
               }`}
             >
-              {initialData.files[0].status ? "Completed" : "Not completed"}
+              {initialData.files[0]?.status ? "Completed" : "Not completed"}
             </span>
           </div>
           )
@@ -103,16 +105,16 @@ export const StatusForm = ({
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-4 mt-4"
+                className="space-y-2"
               >
                 <FormField
                   control={form.control}
                   name="status"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
                       <div className="space-y-0.5">
                         <FormLabel className="text-base">
-                          {initialData.files[0].status == true ? "Completed" : "Not Completed"}
+                          {field.value ? "Completed" : "Not Completed"}
                         </FormLabel>
                       </div>
                       <FormControl>
@@ -124,24 +126,16 @@ export const StatusForm = ({
                     </FormItem>
                   )}
                 />
-                <div className="flex items-center gap-x-2">
 
                   <Button
                     disabled={!isValid || isSubmitting}
                     type="submit"
-                    className="flex-1"
+                    className=""
                   >
-                    Save
+                    {!initialData.files[0]?.status ? 'Save' : 'Update'}
+                    
                   </Button>
-                  <Button
-                    disabled={!isValid || isSubmitting}
-                    onClick={toggleEdit}
-                    variant={"outline"}
-                    className="flex-1"
-                  >
-                    Cancel
-                  </Button>
-                </div>
+                  
               </form>
             </Form>
           )
