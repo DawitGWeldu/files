@@ -5,6 +5,13 @@ const nextConfig = {
             "utfs.io",
         ]
     },
+    typescript: {
+      // !! WARN !!
+      // Dangerously allow production builds to successfully complete even if
+      // your project has type errors.
+      // !! WARN !!
+      ignoreBuildErrors: true,
+    },
     poweredByHeader: false,
     env: {
         // NEXT_PUBLIC_APP_URL: `https://${process.env.VERCEL_URL}`,

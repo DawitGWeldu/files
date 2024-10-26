@@ -17,9 +17,7 @@ import {
   generateVerificationToken,
   generateTwoFactorToken
 } from "@/lib/tokens";
-import { 
-  getTwoFactorConfirmationByUserId
-} from "@/data/two-factor-confirmation";
+
 import parsePhoneNumber from "libphonenumber-js";
 import { debug } from "console";
 
