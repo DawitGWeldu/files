@@ -1,11 +1,13 @@
 import { LucideIcon } from "lucide-react";
 
 import { IconBadge } from "@/components/icon-badge"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface InfoCardProps {
   numberOfItems: number;
   variant?: "default" | "success";
   label: string;
+  subLabel: string;
   icon: LucideIcon;
 }
 
@@ -14,21 +16,21 @@ export const InfoCard = ({
   icon: Icon,
   numberOfItems,
   label,
+  subLabel,
 }: InfoCardProps) => {
   return (
-    <div className="border rounded-md flex items-center gap-x-2 p-3">
-      <IconBadge
-        variant={variant}
-        icon={Icon}
-      />
-      <div>
-        <p className="font-medium">
-          {label}
-        </p>
-        <p className="text-gray-500 text-sm">
-          {numberOfItems} {numberOfItems === 1 ? "Worker" : "Workers"}
-        </p>
-      </div>
-    </div>
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex flex-row gap-2"> <Icon /> {label}</CardTitle>
+          <CardDescription>{subLabel}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-4xl font-bold">{numberOfItems} </p>
+          
+        </CardContent>
+      </Card>
+    </>
+
   )
 }

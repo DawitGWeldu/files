@@ -31,7 +31,7 @@ const DashboardLayout = async ({
 
                 <DashSidebar />
 
-                <main className="flex w-full flex-1 flex-col overflow-hidden justify-between">
+                <main className="flex w-full flex-1 flex-col justify-between">
 
                     <span className="px-6 h-16 shadow-sm py-2 flex items-ceter gap-4 justify-between">
                         <span className="flex gap-6 items-center">

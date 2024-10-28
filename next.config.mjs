@@ -3,6 +3,7 @@ const nextConfig = {
     images: {
         domains:[
             "utfs.io",
+            "vercel-storage.com"
         ]
     },
     typescript: {
