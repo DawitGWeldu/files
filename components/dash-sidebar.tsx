@@ -7,7 +7,7 @@ import { notFound } from "next/navigation"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu"
 import Link from "next/link"
 import { LogoutButton } from "./auth/logout-button"
-
+import Image from 'next/image'
 
 
 const items = [
@@ -49,14 +49,25 @@ export async function DashSidebar() {
   if (!user) {
     return notFound();
   }
+  var ratio = 16/9
   return (
-    <Sidebar collapsible="icon"  className="shadow-sm group-data-[collapsible=icon]:w-16">
-      <SidebarHeader className="flex items-center pt-4 group-data-[collapsible=icon]:text-transparent overflow-hidden">
-        <span className="text-lg font-bold text-nowrap">
+    <Sidebar collapsible="icon" className="shadow-sm group-data-[collapsible=icon]:w-16">
+
+      <SidebarHeader className="flex flex-row justify-around items-cente group-data-[collapsible=icon]:text-transparent overflow-hidden">
+        <Image
+          src="https://utfs.io/f/TYU8Sd1dVxYI92OV8hln8LZTilVSuK26NoQwbcYqB1jkmpPx"
+          alt="ITTIHAD Logo"
+          className="rounded-md"
+          // set the dimension (affected by layout)
+          width={200}
+          height={200 / ratio}
+          layout="responsive" // you can use "responsive", "fill" or the default "intrinsic"
+        />
+        {/* <span className="text-md font-semibold text-nowrap">
           Welcome, {user?.name}
-        </span>
+        </span> */}
       </SidebarHeader>
-      <SidebarContent className="mt-4">
+      <SidebarContent className="mt-0">
         <SidebarGroup>
           {/* <SidebarGroupLabel>Group</SidebarGroupLabel> */}
           <SidebarGroupContent>
@@ -71,7 +82,7 @@ export async function DashSidebar() {
                         <SidebarMenuItem>
                           <LogoutButton>
                             <SidebarMenuButton asChild >
-                              <Link href={item.url} className="group-data-[collapsible=icon]:h-10" style={{height: '2.6rem'}}>
+                              <Link href={item.url} className="group-data-[collapsible=icon]:h-10" style={{ height: '2.6rem' }}>
                                 <item.icon />
                                 <span>{item.title}</span>
                               </Link>
@@ -80,15 +91,15 @@ export async function DashSidebar() {
                         </SidebarMenuItem>
                       </span>
                     ) : (
-                      
+
                       <span key={item.title} className="">
                         <SidebarMenuItem className="" >
-                            <SidebarMenuButton asChild >
-                              <Link href={item.url} style={{height: '2.6rem'}}>
-                                <item.icon />
-                                <span>{item.title}</span>
-                              </Link>
-                            </SidebarMenuButton>
+                          <SidebarMenuButton asChild >
+                            <Link href={item.url} style={{ height: '2.6rem' }}>
+                              <item.icon />
+                              <span>{item.title}</span>
+                            </Link>
+                          </SidebarMenuButton>
                         </SidebarMenuItem>
                       </span>
                     )}

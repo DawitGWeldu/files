@@ -94,7 +94,7 @@ const WorkerIdPage = async ({
                     </AlertDescription>
                 </Alert>
             )}
-            <div className="p-6">
+            <div className="pt-6">
                 <div className="flex items-center justify-between">
                     <div className="flex flex-col gap-y-2">
                         <h1 className="text-2xl font-medium">

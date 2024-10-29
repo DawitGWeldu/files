@@ -22,8 +22,8 @@ const fontHeading = localFont({
 })
 
 export const metadata: Metadata = {
-  title: "LMS",
-  description: "Made by Dave",
+  title: "ITTIHAD",
+  description: "Made by Dawit Getachew +251994697123",
 };
 
 export default async function RootLayout({

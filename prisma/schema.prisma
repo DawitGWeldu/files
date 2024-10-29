@@ -29,6 +29,7 @@ model User {
   role                UserRole  @default(USER)
   isTwoFactorEnabled  Boolean   @default(false)
   Workers             Worker[]
+  Actions             Action[]
 }
 
 model Worker {
@@ -37,14 +38,14 @@ model Worker {
   user        User    @relation(fields: [userId], references: [id])
   name        String
   phoneNumber String?
-  idType      String? @unique
-  idNumber    String? @unique
-  idImage     String?
+  country     String?
   isComplete  Boolean @default(false)
+  departureStatus  Boolean @default(false)
 
-  files File[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @default(now())
+  files     File[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  Action    Action[]
 }
 
 model VerificationToken {
@@ -75,31 +76,45 @@ model TwoFactorToken {
 }
 
 model Attachment {
-  id       String @id @default(uuid())
-  name     String?
-  type     String?
-  position Int?
+  id            String      @id @default(uuid())
+  name          String?
+  type          String?
+  position      Int?
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @default(now())
   requirementId String
   requirement   Requirement @relation(fields: [requirementId], references: [id], onDelete: Cascade)
 
-  files File[]
+  files  File[]
+  Action Action[]
 }
 
-
 model File {
-  id       String @id @default(uuid())
-  name     String?
-  status   Boolean?
-  url      String? @db.Text
-  text      String? @db.Text
-  workerId String
-  worker   Worker @relation(fields: [workerId], references: [id])
+  id           String     @id @default(uuid())
+  name         String?
+  status       Boolean?
+  url          String?    @db.Text
+  text         String?    @db.Text
+  dateTime     DateTime?
+  workerId     String
+  worker       Worker     @relation(fields: [workerId], references: [id])
   attachmentId String
   attachment   Attachment @relation(fields: [attachmentId], references: [id])
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @default(now())
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now()) @updatedAt
+}
+
+model Action {
+  id           String     @id @default(uuid())
+  action       String?
+  userId       String
+  user         User       @relation(fields: [userId], references: [id])
+  workerId     String
+  worker       Worker     @relation(fields: [workerId], references: [id])
+  attachmentId String
+  attachment   Attachment @relation(fields: [attachmentId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now()) @updatedAt
 }
 
 model Requirement {
@@ -107,7 +122,12 @@ model Requirement {
   title       String
   attachments Attachment[]
   position    Int?
-
+  note        String?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @default(now())
+}
+
+model Countries {
+  id   String @id @default(uuid())
+  name String
 }
