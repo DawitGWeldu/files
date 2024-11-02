@@ -10,7 +10,7 @@ VALUES
   (gen_random_uuid(), 'Flight', 7, NOW(), NOW());
 
 INSERT INTO "Country" ("id", "name")
-VALUES (gen_random_uuid(), "Saudi Arabia")
+VALUES (gen_random_uuid(), 'Saudi Arabia')
 -- Get the IDs of the created requirements
 DO $$ 
 DECLARE

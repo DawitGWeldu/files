@@ -33,19 +33,21 @@ model User {
 }
 
 model Worker {
-  id          String  @id @default(cuid())
-  userId      String
-  user        User    @relation(fields: [userId], references: [id])
-  name        String
-  phoneNumber String?
-  country     String?
-  isComplete  Boolean @default(false)
-  departureStatus  Boolean @default(false)
-
-  files     File[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  Action    Action[]
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  name            String
+  phoneNumber     String?
+  country         String?
+  arabId          String?
+  arab            Arab?    @relation(fields: [arabId], references: [id])
+  isComplete      Boolean  @default(false)
+  departureStatus Boolean  @default(false)
+  Action          Action[]
+  Note            Note[]
+  files           File[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now())
 }
 
 model VerificationToken {
@@ -86,7 +88,7 @@ model Attachment {
   requirement   Requirement @relation(fields: [requirementId], references: [id], onDelete: Cascade)
 
   files  File[]
-  Action Action[]
+  actions Action[]
 }
 
 model File {
@@ -125,9 +127,28 @@ model Requirement {
   note        String?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @default(now())
+
+  notes Note[]
 }
 
-model Countries {
+model Note {
+  id        String   @id @default(uuid())
+  note      String
+  workerId  String
+  worker    Worker   @relation(fields: [workerId], references: [id])
+  requirementId String
+  requirement   Requirement @relation(fields: [requirementId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Country {
   id   String @id @default(uuid())
   name String
+}
+
+model Arab {
+  id      String   @id @default(uuid())
+  name    String
+  Workers Worker[]
 }

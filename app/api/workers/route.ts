@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 export async function POST(req: Request) {
     try {
         const user = await currentUser();
-        const { name } = await req.json();
+        const { name, country, arab } = await req.json();
 
         if (!user?.id) {
             return new NextResponse("Unauthorized", { status: 401 });
@@ -14,7 +14,9 @@ export async function POST(req: Request) {
         const worker = await db.worker.create({
             data: {
                 userId: user.id,
-                name
+                name,
+                country,
+                arabId: arab
             }
         });
 

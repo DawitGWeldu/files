@@ -88,12 +88,12 @@ export function UserPasswordForm({ user, className, ...props }: UserPasswordForm
         </CardHeader>
         <CardContent>
           <div className="grid gap-3">
-            <Label htmlFor="name">
+            <Label htmlFor="oldPassword">
               Old Password
             </Label>
             <Input
-              id="name"
-              className="w-[400px]"
+              id="oldPassword"
+              className="w-full"
               size={32}
               // {...register("name")}
             />
@@ -109,7 +109,7 @@ export function UserPasswordForm({ user, className, ...props }: UserPasswordForm
             </Label>
             <Input
               id="name"
-              className="w-[400px]"
+              className="w-full"
               size={32}
               // {...register("name")}
             />
@@ -120,12 +120,12 @@ export function UserPasswordForm({ user, className, ...props }: UserPasswordForm
 
 
           <div className="grid gap-3">
-            <Label htmlFor="name">
+            <Label htmlFor="name mt-1">
               Confirm new Password
             </Label>
             <Input
               id="name"
-              className="w-[400px]"
+              className="w-full"
               size={32}
               // {...register("name")}
             />

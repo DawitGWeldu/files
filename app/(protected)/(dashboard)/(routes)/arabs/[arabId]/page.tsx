@@ -1,4 +1,3 @@
-"use server"
 import { IconBadge } from "@/components/icon-badge";
 import { db } from "@/lib/db";
 import { CircleDollarSign, File, LayoutDashboardIcon, ListChecks, Terminal, InfoIcon } from "lucide-react";
@@ -24,10 +23,10 @@ const WorkerIdPage = async ({
     const worker = await db.worker.findUnique({
         where: {
             id: params.workerId,
+            userId: user.id
         },
         include: {
-            files: true,
-            arab: true
+            files: {}
         },
     });
 
@@ -50,26 +49,7 @@ const WorkerIdPage = async ({
                         where: {
                             workerId: worker.id
                         }
-                    },
-                    actions: {
-                        where: {
-                            workerId: worker.id
-                        },
-                        include: {
-                            user: true
-                        },
-                        orderBy: {
-                            createdAt: 'desc'
-                        }
                     }
-                },
-                orderBy: {
-                    position: 'asc'
-                }
-            },
-            notes: {
-                where: {
-                    workerId: worker.id
                 }
             }
         },
@@ -121,13 +101,7 @@ const WorkerIdPage = async ({
                             Edit Worker
                         </h1>
                         <span className="text-sm text-muted-foreground">
-                            Name: <span className="text-md text-foreground">{worker.name}</span>
-                        </span>
-                        <span className="text-sm text-muted-foreground">
-                            Country: <span className="text-md text-foreground">{worker.country}</span>
-                        </span>
-                        <span className="text-sm text-muted-foreground">
-                            Arab name: <span className="text-md text-foreground">{worker.arab?.name}</span>
+                            Edit {worker.name}&apos;s information and documents
                         </span>
                     </div>
                     <Actions

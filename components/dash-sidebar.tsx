@@ -1,6 +1,6 @@
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 import { dashboardConfig } from "@/config/dashboard"
-import { Calendar, ChevronDown, List, Home, Inbox, LogOut, Search, Settings, PlusCircle } from "lucide-react"
+import { Calendar, ChevronDown, List, Home, Inbox, LogOut, Search, Settings, PlusCircle, ListChecksIcon } from "lucide-react"
 import { Collapsible } from "./ui/collapsible"
 import { currentUser } from "@/lib/auth"
 import { notFound } from "next/navigation"
@@ -27,9 +27,14 @@ const items = [
     icon: Inbox,
   },
   {
-    title: "Brokers",
-    url: "/brokers",
+    title: "Users",
+    url: "/users",
     icon: List,
+  },
+  {
+    title: "Arabs",
+    url: "/arabs",
+    icon: ListChecksIcon,
   },
   {
     title: "Settings",
@@ -49,7 +54,7 @@ export async function DashSidebar() {
   if (!user) {
     return notFound();
   }
-  var ratio = 16/9
+  var ratio = 16 / 9
   return (
     <Sidebar collapsible="icon" className="shadow-sm group-data-[collapsible=icon]:w-16">
 
@@ -59,9 +64,9 @@ export async function DashSidebar() {
           alt="ITTIHAD Logo"
           className="rounded-md"
           // set the dimension (affected by layout)
-          width={200}
+          width={220}
           height={200 / ratio}
-          layout="responsive" // you can use "responsive", "fill" or the default "intrinsic"
+          // layout="responsive" // you can use "responsive", "fill" or the default "intrinsic"
         />
         {/* <span className="text-md font-semibold text-nowrap">
           Welcome, {user?.name}
@@ -73,7 +78,7 @@ export async function DashSidebar() {
           <SidebarGroupContent>
             <SidebarMenu className="p-2 gap-2 group-data-[collapsible=icon]:gap-2 ">
               {items.map((item) => (
-                item.url == '/brokers' && user.role !== 'ADMIN' ? (
+                (item.url == '/users' || item.url == '/arabs') && user.role !== 'ADMIN' ? (
                   <></>
                 ) : (
                   <>

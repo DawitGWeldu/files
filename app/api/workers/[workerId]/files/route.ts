@@ -9,7 +9,16 @@ export async function POST(
 ) {
   try {
     const user = await currentUser();
-    const { url, name, status, attachmentId } = await req.json();
+    const { url, name, status, attachmentId, text } = await req.json();
+    let act = "Made changes"
+    if(url?.length > 0)
+      act = "Uploaded a file"
+    if(name?.length > 0)
+      act = "Uploaded a file"
+    if(status?.length > 0)
+      act = "Changed a status"
+    if(text?.length > 0)
+      act = "Changed text"
 
     if (!user?.id) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -35,6 +44,17 @@ export async function POST(
         attachmentId: attachmentId,
       }
     });
+
+
+    const action = await db.action.create({
+      data: {
+        action: act,
+        userId: user?.id,
+        workerId: params.workerId,
+        attachmentId: attachmentId
+      }
+    });
+
 
     return NextResponse.json(file);
   } catch (error) {

@@ -30,59 +30,28 @@ import { useAsyncEffect } from 'use-async-effect'
 const formSchema = z.object({
     name: z.string().min(1, {
         message: "Name is required",
-    }),
-    country: z.string(),
-    arab: z.string().min(1, {
-        message: "Arab selection is required",
-    }),
+    })
 })
 
 const CreatePage = () => {
     const router = useRouter();
-    const [arabs, setArabs] = useState<Arab[]>([])
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
-            country: "Saudi Arabia",
-            arab: "",
         }
     });
 
-    // useEffect(() => {
-    //     (async () => {
-    //         try {
-    //             axios.get("/api/arabs").then((res) => {
-    //                 console.log("ARABS: ", res.data)
-    //                 setArabs(res.data)
-    //             })
-    //             // setArabs(arbs.data)
-    //         } catch (error) {
-    //             console.log("HIIIIIIIIIIIIIIHIIIIIIIIIIHIIIIIIIIIII: ", error)
-    //         }
-    //     })()
-    // }, [])
-
-    useAsyncEffect(async () => {
-        try {
-            const res = await axios.get("/api/arabs")
-            console.log("ARABSARABS: ", res.data)
-
-            setArabs(res.data)
-
-        } catch (error) {
-            console.log("HI: ", error)
-        }
-    }, []);
+   
 
     const { isSubmitting, isValid } = form.formState;
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            const response = await axios.post("/api/workers", values);
-            router.push(`/workers/${response.data.id}`);
+            const response = await axios.post("/api/arabs", values);
+            router.push(`/arabs`);
             router.refresh();
-            toast.success("Worker created successfully");
+            toast.success("Arab added successfully");
         } catch {
             toast.error("Something went wrong.")
         }
@@ -92,9 +61,9 @@ const CreatePage = () => {
         <div className="flex items-center justify-center">
             <div className="w-full max-w-md p-8 space-y-6">
                 <div className="text-center">
-                    <h1 className="text-2xl font-bold">Register a new worker</h1>
+                    <h1 className="text-2xl font-bold">Add a new Arab</h1>
                     <p className="text-sm text-muted-foreground mt-2">
-                        Enter the worker&apos;s details below.
+                        Enter the arab&apos;s details below.
                     </p>
                 </div>
                 <Form {...form}>
@@ -109,20 +78,20 @@ const CreatePage = () => {
                                         <Input
                                             {...field}
                                             disabled={isSubmitting}
-                                            placeholder="Enter the worker's name"
+                                            placeholder="Enter the arab's name"
                                             aria-describedby="name-description"
                                         />
                                     </FormControl>
                                     <FormMessage />
                                     <p id="name-description" className="sr-only">
-                                        Enter the full name of the worker
+                                        Enter the name of the arab
                                     </p>
                                 </FormItem>
                             )}
                         />
 
 
-                        <FormField
+                        {/* <FormField
                             control={form.control}
                             name="country"
                             render={({ field }) => (
@@ -141,29 +110,8 @@ const CreatePage = () => {
                                     <FormMessage />
                                 </FormItem>
                             )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="arab"
-                            render={({ field }) => (
-                                <FormItem className="flex flex-col">
-                                    <FormLabel>Arab</FormLabel>
-                                    <Select defaultValue={arabs[0]?.name} onValueChange={field.onChange}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select Arab" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {arabs?.map((arab) => (
-                                                <SelectItem key={arab.id} value={arab.id}>{arab.name}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        /> */}
+                        
 
 
                         <div className="flex items-center justify-end gap-x-2">
@@ -175,7 +123,7 @@ const CreatePage = () => {
                                 Cancel
                             </Button>
                             <Button type="submit" disabled={!isValid || isSubmitting}>
-                                {isSubmitting ? 'Creating...' : 'Create Worker'}
+                                {isSubmitting ? 'Creating...' : 'Add Arab'}
                             </Button>
                         </div>
                     </form>

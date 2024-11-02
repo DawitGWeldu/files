@@ -32,6 +32,15 @@ export async function DELETE(
       }
     });
 
+    const action = await db.action.create({
+      data: {
+        action: 'Deleted a file',
+        userId: user?.id,
+        workerId: params.workerId,
+        attachmentId: file?.attachmentId
+      }
+    });
+
     return NextResponse.json(file);
   } catch (error) {
     console.log("ATTACHMENT_ID", error);
@@ -53,7 +62,7 @@ export async function PATCH(
     if (!user?.id) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    console.log("{{{{{}}}}}}}: ", values)
+    // console.log("{{{{{}}}}}}}: ", values)
     if (fileId !== 'undefined') {
       const file = await db.file.update({
         where: {
@@ -63,6 +72,15 @@ export async function PATCH(
           ...values,
         }
       });
+
+      const action = await db.action.create({
+        data: {
+          action: 'Changed a file',
+          userId: user?.id,
+          workerId: params.workerId,
+          attachmentId: values?.attachmentId
+        }
+      });
       return NextResponse.json(file);
 
     } else {
@@ -70,6 +88,25 @@ export async function PATCH(
       const file = await db.file.create({
         data: {
           ...values
+        }
+      });
+
+      let act = "Made changes"
+      if (file.url)
+        act = "Uploaded a file"
+      if (file.name)
+        act = "Uploaded a file"
+      if (file.status)
+        act = "Changed a status"
+      if (file.text)
+        act = "Changed text"
+
+      const action = await db.action.create({
+        data: {
+          action: act,
+          userId: user?.id,
+          workerId: params.workerId,
+          attachmentId: values?.attachmentId
         }
       });
 

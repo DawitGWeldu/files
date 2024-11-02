@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { CalendarIcon, Clock, Pencil, X } from "lucide-react";
+import { Calendar, CalendarIcon, Clock, Pencil, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -24,7 +24,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
-import { Calendar } from "@/components/ui/calendar";
 
 interface DateTimeFormProps {
     initialData: Attachment & { files: File[] };
@@ -124,6 +123,7 @@ export const DateTimeForm = ({
                                 <Calendar
                                     mode="single"
                                     selected={date}
+                                    // @ts-ignore
                                     onSelect={setDate}
                                     initialFocus
                                 />

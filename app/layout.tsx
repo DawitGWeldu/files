@@ -35,7 +35,7 @@ export default async function RootLayout({
 
   return (
     <SessionProvider session={session}>
-      <html lang="en">
+      <html suppressHydrationWarning lang="en">
         {/* pattern-tic-tac-toe-gray-200/10 pattern-tic-tac-toe-scale-100 */}
         <body
           className={cn(

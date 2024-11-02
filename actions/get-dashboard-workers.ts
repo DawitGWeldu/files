@@ -16,9 +16,9 @@ export const getDashboardWorkers = async (userId: string, role: string): Promise
       registeredWorkers = regWorkers
     } else {
       const regWorkers = await db.worker.findMany({
-        where: {
-          userId: userId,
-        }
+        // where: {
+        //   userId: userId,
+        // }
       });
       registeredWorkers = regWorkers
     }
