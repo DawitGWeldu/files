@@ -121,7 +121,7 @@ export const FileForm = ({
         {isEditing && (
           <div>
             <FileUpload
-              endpoint="courseAttachment"
+              workerId={workerId}
               onChange={(url) => {
                 if (url) {
                   onSubmit({ url: url });

@@ -129,8 +129,9 @@ const WorkerIdPage = async ({
                     </div>
                     <Actions
                         disabled={!isComplete}
-                        courseId={params.workerId}
-                        isPublished={worker.isComplete}
+                        workerName={worker.name}
+                        workerId={params.workerId}
+                        hasDeparted={worker.isComplete}
                     />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">

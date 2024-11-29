@@ -79,7 +79,7 @@ export async function PATCH(
 
     return NextResponse.json(worker);
   } catch (error) {
-    console.log("[COURSE_ID]", error);
+    console.log("[WORKER_ID]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

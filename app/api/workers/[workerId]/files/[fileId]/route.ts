@@ -1,7 +1,10 @@
 import { currentUser } from "@/lib/auth";
 import { NextResponse } from "next/server";
-
 import { db } from "@/lib/db";
+import { unlink } from "fs/promises";
+import { join } from "path";
+
+
 
 export async function DELETE(
   req: Request,
@@ -13,24 +16,29 @@ export async function DELETE(
     if (!user?.id) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-
-    const broker = await db.worker.findUnique({
-      where: {
-        id: params.workerId,
-        userId: user.id
-      }
-    });
-
-    if (!broker) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-
     const file = await db.file.delete({
       where: {
         workerId: params.workerId,
         id: params.fileId,
       }
     });
+
+    // Implement file delete operation here, after checking if file has a non empty url or name property 
+
+    if (file?.url) {
+      // Resolve the file path on the server
+      const filePath = join(process.cwd(), "public", file.url);
+
+      try {
+        // Delete the file from the server
+        await unlink(filePath);
+      } catch (fsError) {
+        console.error("File deletion error:", fsError);
+        return new NextResponse("Failed to delete file from server", {
+          status: 500,
+        });
+      }
+    }
 
     const action = await db.action.create({
       data: {
