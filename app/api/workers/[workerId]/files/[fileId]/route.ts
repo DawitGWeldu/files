@@ -16,29 +16,39 @@ export async function DELETE(
     if (!user?.id) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    const file = await db.file.delete({
+    // Fetch the file details first
+    const file = await db.file.findUnique({
       where: {
-        workerId: params.workerId,
         id: params.fileId,
-      }
+      },
     });
 
-    // Implement file delete operation here, after checking if file has a non empty url or name property 
+    if (!file) {
+      return new NextResponse("File not found", { status: 404 });
+    }
 
-    if (file?.url) {
+    if (file.url) {
       // Resolve the file path on the server
       const filePath = join(process.cwd(), "public", file.url);
 
       try {
-        // Delete the file from the server
+        // Attempt to delete the actual file
         await unlink(filePath);
       } catch (fsError) {
         console.error("File deletion error:", fsError);
-        return new NextResponse("Failed to delete file from server", {
-          status: 500,
-        });
+        return new NextResponse(
+          "Failed to delete file from server, aborting database deletion.",
+          { status: 500 }
+        );
       }
     }
+
+    // Now delete the database entry
+    await db.file.delete({
+      where: {
+        id: params.fileId,
+      },
+    });
 
     const action = await db.action.create({
       data: {
