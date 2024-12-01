@@ -15,7 +15,7 @@ const nextConfig = {
   poweredByHeader: false,
   trailingSlash: false,
   env: {
-    // DATABASE_URL: "mysql://ittihafv_root:Donut35ddV2.0@localhost:3306/ittihafv_files",
+    DATABASE_URL: "mysql://ittihafv_root:Donut35ddV2.0@localhost:3306/ittihafv_files",
     UPLOADTHING_SECRET:
       "sk_live_0c7fe2d38add16beea7cbdbbec017cc040ef987fda6dea78dcaaab01b8b039c2",
     UPLOADTHING_APP_ID: "3hg97mokjm",
@@ -28,8 +28,8 @@ const nextConfig = {
     secret: "thisisasecret",
     HOST: "ittihadagency.com",
     PORT: "443",
-    // NEXTAUTH_URL: "https://ittihadagency.com/api/auth",
-    // NEXT_PUBLIC_APP_URL: "https://ittihadagency.com",
+    NEXTAUTH_URL: "https://ittihadagency.com/api/auth",
+    NEXT_PUBLIC_APP_URL: "https://ittihadagency.com",
     trustHost: "true",
     AFRO_SMS_API_KEY:
       "eyJhbGciOiJIUzI1NiJ9.eyJpZGVudGlmaWVyIjoiR0t6c0hBbnQ2UzJPTG0wdFJCbkJ1VVBlaFRHRU5XSlIiLCJleHAiOjE4NjY4NzE4NzIsImlhdCI6MTcwOTAxOTA3MiwianRpIjoiNTJjMGQ2ZmQtZjU3OC00ZWQyLTg2ODEtYTY1OTk1NzIyODc2In0.fmr7N-K9qbE-31h-Xys9T-Lz6aUKNVsXE5nnOTXitzc",

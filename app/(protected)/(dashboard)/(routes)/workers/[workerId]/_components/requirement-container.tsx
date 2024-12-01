@@ -110,7 +110,7 @@ export const RequirementContainer = ({
         <AccordionItem value={`${initialData.title}_actions`}>
           <AccordionTrigger className="px-4 py-2 hover:bg-accent hover:text-accent-foreground">
             <div className="flex items-center">
-              <Activity className="h-4 w-4 mr-2" />
+              {/* <Activity className="h-4 w-4 mr-2" /> */}
               <span className="font-semibold">Actions</span>
             </div>
           </AccordionTrigger>
@@ -144,7 +144,7 @@ export const RequirementContainer = ({
       <CardFooter className="flex flex-col items-start pt-4 border-t">
         <div className="flex flex-row justify-between items-center w-full">
           <div className="flex items-center mb-2 w-full">
-            <MessageSquare className="h-4 w-4 mr-2" />
+            {/* <MessageSquare className="h-4 w-4 mr-2" /> */}
             <span className="font-semibold">Note</span>
           </div>
           {!isAddingNote && (
@@ -163,7 +163,7 @@ export const RequirementContainer = ({
 
         {initialData.notes.length > 0 &&
           <div className="flex items-center mb-2 w-full">
-            <DashIcon className="h-4 w-4 mr-2" />
+            {/* <DashIcon className="h-4 w-4 mr-2" /> */}
             <span className="font-normal">{initialData.notes[0].note}</span>
           </div>
         }

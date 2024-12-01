@@ -16,7 +16,7 @@ const ArabsPage = async () => {
   const arabs = await db.arab.findMany({});
 
   return ( 
-    <div className="p-6">
+    <div>
       <DataTable columns={columns} data={arabs} />
     </div>
    );
