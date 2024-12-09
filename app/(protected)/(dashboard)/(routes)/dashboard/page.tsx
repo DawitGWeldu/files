@@ -42,7 +42,7 @@ export default async function Dashboard() {
 
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle className="flex flex-row gap-2"> Arabs </CardTitle>
             <CardDescription>Here you can find and manage recently added Arabs</CardDescription>
@@ -59,7 +59,7 @@ export default async function Dashboard() {
           <CardContent>
             <WorkersDataTable columns={workersColumns} data={workers} />
           </CardContent>
-        </Card>
+        </Card> */}
 
 
         <InfoCard

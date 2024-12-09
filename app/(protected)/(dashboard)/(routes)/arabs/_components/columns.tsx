@@ -1,6 +1,6 @@
 "use client"
 
-import { Arab, User, Worker } from "@prisma/client"
+import { Arab, Country, User, Worker } from "@prisma/client"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, Delete, MoreHorizontal, Pencil, Trash } from "lucide-react"
 import Link from "next/link";
@@ -14,9 +14,28 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { ConfirmModal } from "@/components/modals/confirm-modal";
+import axios from "axios";
+import toast from "react-hot-toast";
+import router from "next/router";
 
+type arabWithCountry = Arab & {
+  country: Country
+}
 
-export const columns: ColumnDef<Arab>[] = [
+const onDelete = async (arabId: string) => {
+  try {
+
+    await axios.delete(`/api/arabs/${arabId}`);
+
+    toast.success("Worker deleted");
+  } catch(er) {
+    console.log(er)
+    toast.error("Something went wrong");
+  }
+}
+
+export const columns: ColumnDef<arabWithCountry>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -32,27 +51,27 @@ export const columns: ColumnDef<Arab>[] = [
     },
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: "country",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Date registered
+          Country
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
     cell: ({ row }) => {
-      const dateReg = row.getValue("createdAt");
+      const cou: Country = row.getValue("country");
       // const dt = dateReg.
       //@ts-ignore
-      const dt = new Date(dateReg).toLocaleString('en-us', { year:"numeric", month:"short", day:"numeric"})
-      
+      // const dt = new Date(dateReg).toLocaleString('en-us', { year: "numeric", month: "short", day: "numeric" })
+
       return (
         <span>
-          {dt}
+          {cou.name}
         </span>
       )
     }
@@ -70,20 +89,18 @@ export const columns: ColumnDef<Arab>[] = [
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <Link href={`/workers/${id}`}>
-              <DropdownMenuItem>
-                <Pencil className="h-4 w-4 mr-2" />
-                Edit
-              </DropdownMenuItem>
-            </Link>
-            <Link href={`api/arabs/${id}`}>
-              <DropdownMenuItem>
-                <Trash className="h-4 w-4 mr-2" />
-                Delete
-              </DropdownMenuItem>
-            </Link>
-          </DropdownMenuContent>
+          <ConfirmModal message="Caution! If you procede, all workers registered under this Arab will also be deleted!" onConfirm={() => onDelete(id)}>
+
+            <DropdownMenuContent align="end">
+              <Button>
+                <DropdownMenuItem>
+                  <Trash className="h-4 w-4 mr-2" />
+                  Delete
+                </DropdownMenuItem>
+              </Button>
+            </DropdownMenuContent>
+          </ConfirmModal>
+
         </DropdownMenu>
       )
     }

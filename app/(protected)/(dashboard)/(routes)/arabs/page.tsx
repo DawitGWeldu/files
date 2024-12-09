@@ -13,7 +13,11 @@ const ArabsPage = async () => {
     return redirect("/");
   }
 
-  const arabs = await db.arab.findMany({});
+  const arabs = await db.arab.findMany({
+    include: {
+      country: true
+    }
+  });
 
   return ( 
     <div>

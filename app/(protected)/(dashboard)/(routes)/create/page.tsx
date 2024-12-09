@@ -23,7 +23,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useEffect, useState } from "react";
-import { Arab } from "@prisma/client";
+import { Arab, Country } from "@prisma/client";
 import { db } from "@/lib/db";
 import { cn } from "@/lib/utils";
 import { useAsyncEffect } from 'use-async-effect'
@@ -40,12 +40,14 @@ const formSchema = z.object({
 const CreatePage = () => {
     const router = useRouter();
     const [arabs, setArabs] = useState<Arab[]>([])
+    const [countries, setCountries] = useState<Country[]>([])
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: {
-            name: "",
-            country: "Saudi Arabia",
-            arab: "",
+        defaultValues:{
+            arab: '',
+            name: '', 
+            country: ''
         }
     });
 
@@ -66,7 +68,8 @@ const CreatePage = () => {
     useAsyncEffect(async () => {
         try {
             const res = await axios.get("/api/arabs")
-            setArabs(res.data)
+            setArabs(res.data.arabs)
+            setCountries(res.data.countries)
         } catch (error) {
             console.log("HI: ", error)
         }
@@ -132,7 +135,11 @@ const CreatePage = () => {
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
-                                            <SelectItem value="Saudi Arabia">Saudi Arabia</SelectItem>
+                                            {countries.map((country) => (
+                                                <SelectItem key={country.id} value={country.id}>
+                                                    {country.name}
+                                                </SelectItem>
+                                            ))}
                                         </SelectContent>
                                     </Select>
                                     <FormMessage />

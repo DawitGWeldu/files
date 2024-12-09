@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 export async function POST(req: Request) {
     try {
         const user = await currentUser();
-        const { name } = await req.json();
+        const { name, country } = await req.json();
 
         if (!user?.id) {
             return new NextResponse("Unauthorized", { status: 401 });
@@ -13,7 +13,8 @@ export async function POST(req: Request) {
 
         const arab = await db.arab.create({
             data: {
-                name
+                name,
+                countryId: country
             }
         });
 
@@ -34,8 +35,9 @@ export async function GET(req: Request) {
         }
 
         const arab = await db.arab.findMany();
+        const countries = await db.country.findMany();
 
-        return NextResponse.json(arab);
+        return NextResponse.json({ arabs: arab, countries: countries });
 
     } catch (error) {
         console.log("[ARABS]", error);

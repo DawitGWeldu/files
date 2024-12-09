@@ -5,7 +5,6 @@ datasource db {
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 enum UserRole {
@@ -145,10 +144,13 @@ model Note {
 model Country {
   id   String @id @default(uuid())
   name String
+  Arab Arab[]
 }
 
 model Arab {
   id      String   @id @default(uuid())
   name    String
   Workers Worker[]
+  countryId String
+  country   Country @relation(fields: [countryId], references: [id])
 }

@@ -83,3 +83,41 @@ export const sendVerificationSms = async (
   const code = verification.data.response.code;
   return code;
 };
+interface workers {
+  workerId: string,
+  workerName: string,
+  departureDate: Date | null
+}
+export const sendNotificationSms = async (
+  workers: workers[]
+) => {
+  let message = `The following workers will depart within 5 days.\n`;
+
+  workers.forEach((worker) => {
+    const formattedDate = worker.departureDate
+      ? new Intl.DateTimeFormat('en-US', {
+          weekday: 'long',
+          month: 'long',
+          day: 'numeric',
+        }).format(worker.departureDate)
+      : 'Unknown date';
+      message += `Name: ${worker.workerName}\n`;
+      message += `Departure date: ${formattedDate}\n`;
+      message += `Link: ${domain}/workers/${worker.workerId}\n\n`;
+  })
+  console.log("MESSAGE: ",message)
+  await axios({
+    url: 'https://api.afromessage.com/api/send',
+    method: 'get',
+    headers: {
+      'Authorization': `Bearer ${process.env.AFRO_SMS_API_KEY}`
+    },
+    params: {
+      timeout: 10000,
+      from: process.env.AFRO_SMS_IDENTIFIER_ID,
+      to: 994697123,
+      message: message,
+    },
+  });
+
+};

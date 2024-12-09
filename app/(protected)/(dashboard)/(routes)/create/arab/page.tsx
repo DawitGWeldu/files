@@ -23,26 +23,39 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useEffect, useState } from "react";
-import { Arab } from "@prisma/client";
+import { Arab, Country } from "@prisma/client";
 import { db } from "@/lib/db";
 import { cn } from "@/lib/utils";
 import { useAsyncEffect } from 'use-async-effect'
 const formSchema = z.object({
     name: z.string().min(1, {
         message: "Name is required",
+    }),
+    country: z.string().min(1, {
+        message: "Country is required",
     })
 })
 
 const CreatePage = () => {
     const router = useRouter();
+    const [countries, setCountries] = useState<Country[]>([])
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
+            country: "Saudi Arabia",
         }
     });
 
-   
+    useAsyncEffect(async () => {
+        try {
+            const res = await axios.get("/api/arabs")
+            setCountries(res.data.countries)
+            console.log("HI: ", res.data.countries)
+        } catch (error) {
+            console.log("HI: ", error)
+        }
+    }, []);
 
     const { isSubmitting, isValid } = form.formState;
 
@@ -91,7 +104,7 @@ const CreatePage = () => {
                         />
 
 
-                        {/* <FormField
+                        <FormField
                             control={form.control}
                             name="country"
                             render={({ field }) => (
@@ -104,15 +117,17 @@ const CreatePage = () => {
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
-                                            <SelectItem value="Saudi Arabia">Saudi Arabia</SelectItem>
+                                            {countries.map((country) => (
+                                                <SelectItem key={country.id} value={country.id}>
+                                                    {country.name}
+                                                </SelectItem>
+                                            ))}
                                         </SelectContent>
                                     </Select>
                                     <FormMessage />
                                 </FormItem>
                             )}
-                        /> */}
-                        
-
+                        />
 
                         <div className="flex items-center justify-end gap-x-2">
                             <Button

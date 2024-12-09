@@ -14,12 +14,14 @@ import {
 
 interface ConfirmModalProps {
   children: React.ReactNode;
-  onConfirm: () => void;
+  onConfirm: () => void | Promise<void>;
+  message?: string | null;
 };
 
 export const ConfirmModal = ({
   children,
-  onConfirm
+  onConfirm,
+  message
 }: ConfirmModalProps) => {
   return (
     <AlertDialog>
@@ -30,7 +32,7 @@ export const ConfirmModal = ({
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone.
+            {message ? message : "This action cannot be undone."}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
