@@ -127,7 +127,7 @@ const WorkerIdPage = async ({
                             Country: <span className="text-md text-foreground">{worker.country}</span>
                         </span>
                         <span className="text-sm text-muted-foreground">
-                            Arab&apos;s name: <span className="text-md text-foreground">{worker.arab?.name}</span>
+                            Employer&apos;s name: <span className="text-md text-foreground">{worker.arab?.name}</span>
                         </span>
                     </div>
                     <Actions

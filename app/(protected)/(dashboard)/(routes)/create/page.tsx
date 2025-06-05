@@ -33,7 +33,7 @@ const formSchema = z.object({
     }),
     country: z.string(),
     arab: z.string().min(1, {
-        message: "Arab selection is required",
+        message: "Employer selection is required",
     }),
 })
 
@@ -147,11 +147,11 @@ const CreatePage = () => {
                             name="arab"
                             render={({ field }) => (
                                 <FormItem className="flex flex-col">
-                                    <FormLabel>Arab</FormLabel>
+                                    <FormLabel>Employer</FormLabel>
                                     <Select defaultValue={arabs[0]?.name} onValueChange={field.onChange}>
                                         <FormControl>
                                             <SelectTrigger>
-                                                <SelectValue placeholder="Select Arab" />
+                                                <SelectValue placeholder="Select Employer" />
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>

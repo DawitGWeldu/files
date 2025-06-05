@@ -25,7 +25,7 @@ export const columns: ColumnDef<Arab>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Arab&apos;s Name
+          Employer&apos;s Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )

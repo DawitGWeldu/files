@@ -32,7 +32,7 @@ const items = [
     icon: List,
   },
   {
-    title: "Arabs",
+    title: "Employers",
     url: "/arabs",
     icon: ListChecksIcon,
   },

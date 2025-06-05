@@ -67,7 +67,7 @@ export function DataTable<TData, TValue>({
         <Link href="/create/arab">
           <Button>
             <PlusCircle className="h-4 w-4 mr-2" />
-            Add Arab
+            Add Employer
           </Button>
         </Link>
       </div>

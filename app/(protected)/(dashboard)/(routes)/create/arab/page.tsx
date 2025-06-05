@@ -51,7 +51,7 @@ const CreatePage = () => {
             const response = await axios.post("/api/arabs", values);
             router.push(`/arabs`);
             router.refresh();
-            toast.success("Arab added successfully");
+            toast.success("Employer added successfully");
         } catch {
             toast.error("Something went wrong.")
         }
